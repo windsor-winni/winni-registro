@@ -1,0 +1,2828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WinniRegistro · San Javier</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root {
+  --bg1: #0a2818;
+  --bg2: #0d3d4a;
+  --bg: #0c3230;
+  --card: rgba(255,255,255,0.07);
+  --card-solid: #0f3d38;
+  --border: rgba(255,255,255,0.12);
+  --accent: #00e5a0;
+  --accent2: #f7c948;
+  --text: #e8f8f2;
+  --muted: #7abfaa;
+  --r: 16px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Nunito', sans-serif;
+  background: linear-gradient(160deg, #0a2818 0%, #0d3d4a 50%, #0a2030 100%);
+  background-attachment: fixed;
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* HEADER */
+.hdr {
+  background: linear-gradient(135deg, #064d2e, #0a6b5a, #0d5c8a);
+  padding: 22px 18px 18px; text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.hdr-logo { font-size: 34px; margin-bottom: 4px; }
+.hdr h1 {
+  font-family: 'Oswald', sans-serif; font-size: 20px;
+  letter-spacing: 1.5px; color: var(--accent); text-transform: uppercase;
+}
+.hdr p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.badge {
+  display: inline-block;
+  background: rgba(0,229,160,0.15); border: 1px solid var(--accent);
+  color: var(--accent); font-size: 10px; font-weight: 700;
+  padding: 2px 10px; border-radius: 20px; margin-top: 6px; letter-spacing: 1px;
+}
+
+/* SEARCH */
+.search-wrap { padding: 14px 14px 6px; }
+.search-box {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.08); border: 1.5px solid var(--border);
+  border-radius: 50px; padding: 10px 14px; gap: 8px;
+}
+.search-box input {
+  background: none; border: none; outline: none;
+  color: var(--text); font-family: 'Nunito', sans-serif; font-size: 14px; width: 100%;
+}
+.search-box input::placeholder { color: var(--muted); }
+
+/* SECTION LABEL */
+.sec-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted); padding: 12px 16px 6px;
+}
+
+/* COURSES GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 12px; }
+.ccard {
+  border-radius: var(--r); padding: 16px 12px 14px;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform 0.15s;
+}
+.ccard:active { transform: scale(0.96); }
+.ccard::before {
+  content:''; position:absolute; top:-18px; right:-18px;
+  width:70px; height:70px; border-radius:50%;
+  background:rgba(255,255,255,0.08);
+}
+.ccard .gnum {
+  font-family:'Oswald',sans-serif; font-size:38px; font-weight:700;
+  line-height:1; color:rgba(255,255,255,0.95);
+}
+.ccard .gpar {
+  display:inline-block; background:rgba(255,255,255,0.25);
+  color:#fff; font-size:12px; font-weight:800;
+  padding:2px 8px; border-radius:7px; margin-left:3px;
+  vertical-align:middle; position:relative; top:-7px;
+}
+.ccard .glvl {
+  font-size:10px; color:rgba(255,255,255,0.7); font-weight:600;
+  margin-top:4px; text-transform:uppercase; letter-spacing:0.5px;
+}
+.ccard .gcnt {
+  font-size:12px; font-weight:700; color:rgba(255,255,255,0.9); margin-top:6px;
+}
+.ccard .gcnt span { font-size:10px; font-weight:600; color:rgba(255,255,255,0.55); }
+.c1a{background:linear-gradient(135deg,#00b09b,#0a7a6e)}
+.c2a{background:linear-gradient(135deg,#e040fb,#9c27b0)}
+.c2b{background:linear-gradient(135deg,#ff6d00,#e65100)}
+.c3a{background:linear-gradient(135deg,#f7971e,#c76b00)}
+.c3b{background:linear-gradient(135deg,#e91e8c,#a8005e)}
+.c4a{background:linear-gradient(135deg,#11998e,#0a6e65)}
+.c4b{background:linear-gradient(135deg,#3f51b5,#1a237e)}
+.c5a{background:linear-gradient(135deg,#e53935,#b71c1c)}
+.c5b{background:linear-gradient(135deg,#43a047,#1b5e20)}
+.c6a{background:linear-gradient(135deg,#00acc1,#006064)}
+.c6b{background:linear-gradient(135deg,#7b1fa2,#4a148c)}
+
+/* BOTTOM NAV */
+.bnav {
+  position:fixed; bottom:0; left:0; right:0;
+  background:rgba(10,40,24,0.95); border-top:1px solid var(--border); backdrop-filter:blur(10px);
+  display:flex; justify-content:space-around;
+  padding:8px 0 12px; z-index:100;
+}
+.nitem {
+  display:flex; flex-direction:column; align-items:center;
+  gap:2px; font-size:9px; font-weight:700;
+  color:var(--muted); cursor:pointer; letter-spacing:0.5px;
+}
+.nitem.active { color:var(--accent); }
+.nitem .ni { font-size:20px; }
+
+/* VIEWS */
+.view {
+  display:none; position:fixed; inset:0;
+  background:var(--bg); z-index:200; overflow-y:auto;
+  padding-bottom:80px;
+}
+.view.open { display:block; }
+
+/* VIEW HEADER */
+.vhdr {
+  padding:18px 16px 16px;
+  border-radius:0 0 22px 22px; margin-bottom:2px;
+}
+.back-btn {
+  background:rgba(255,255,255,0.15); border:none; color:#fff;
+  font-size:20px; width:36px; height:36px; border-radius:10px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  margin-bottom:10px;
+}
+.vhdr h2 { font-family:'Oswald',sans-serif; font-size:26px; color:#fff; }
+.vhdr p { font-size:12px; color:rgba(255,255,255,0.65); margin-top:2px; }
+
+/* MENU CARDS */
+.mgrid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding:14px 12px; }
+.mcard {
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:var(--r); padding:18px 12px;
+  cursor:pointer; text-align:center;
+  transition:transform 0.15s, border-color 0.15s;
+}
+.mcard:active { transform:scale(0.95); }
+.mcard .mi { font-size:28px; margin-bottom:6px; }
+.mcard .ml { font-size:12px; font-weight:700; color:var(--text); line-height:1.3; }
+.mcard .ms { font-size:10px; color:var(--muted); margin-top:3px; }
+.mcard.hi { border-color:var(--accent); background:rgba(0,201,167,0.08); }
+.mcard.hi .ml { color:var(--accent); }
+.mcard.dim { opacity:0.4; cursor:default; }
+.mcard.full { grid-column:span 2; }
+
+/* TABS */
+.tabs { display:flex; gap:6px; padding:10px 14px 4px; }
+.tab {
+  flex:1; padding:9px 4px; background:var(--card);
+  border:1.5px solid var(--border); border-radius:10px;
+  text-align:center; font-size:11px; font-weight:800;
+  color:var(--muted); cursor:pointer; transition:all 0.15s;
+}
+.tab.active { background:rgba(0,201,167,0.15); border-color:var(--accent); color:var(--accent); }
+
+/* PILLS */
+#evalDimPills { padding: 6px 14px 8px; display: none; }
+.pill {
+  padding:7px 16px; background:var(--card);
+  border:1.5px solid var(--border); border-radius:30px;
+  font-size:12px; font-weight:800; color:var(--muted);
+  cursor:pointer; transition:all 0.15s;
+}
+.pill.active-ser  { background:rgba(107,184,255,0.15); border-color:#6bb8ff; color:#6bb8ff; }
+.pill.active-saber{ background:rgba(247,201,72,0.15);  border-color:#f7c948; color:#f7c948; }
+.pill.active-hacer{ background:rgba(76,255,138,0.15);  border-color:#4cff8a; color:#4cff8a; }
+.pill.active-auto { background:rgba(212,107,255,0.15); border-color:#d46bff; color:#d46bff; }
+.pill.active-gen  { background:rgba(0,201,167,0.15);   border-color:var(--accent); color:var(--accent); }
+
+/* CONFIGURE CRITERIA */
+.crit-section { margin:0 14px 14px; }
+.crit-dim-label {
+  font-size:10px; font-weight:800; letter-spacing:1.5px;
+  text-transform:uppercase; padding:10px 0 6px;
+  display:flex; align-items:center; gap:8px;
+}
+.dim-tag {
+  padding:3px 12px; border-radius:20px; font-size:10px; font-weight:800;
+}
+.dt-ser  { background:rgba(107,184,255,0.15); color:#6bb8ff; border:1px solid #6bb8ff; }
+.dt-saber{ background:rgba(247,201,72,0.15);  color:#f7c948; border:1px solid #f7c948; }
+.dt-hacer{ background:rgba(76,255,138,0.15);  color:#4cff8a; border:1px solid #4cff8a; }
+
+.crit-row {
+  display:flex; align-items:center; gap:10px;
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:12px; padding:10px 14px; margin-bottom:6px;
+}
+.crit-key {
+  font-size:14px; font-weight:800; color:var(--muted);
+  min-width:20px; text-align:center;
+}
+.crit-inp {
+  flex:1; background:none; border:none; outline:none;
+  color:var(--text); font-family:'Nunito',sans-serif;
+  font-size:14px; font-weight:600;
+}
+.crit-inp::placeholder { color:var(--muted); }
+
+/* EVALUATION - BY CRITERION */
+.crit-block { margin:0 12px 14px; }
+.crit-block-title {
+  font-size:11px; font-weight:800; letter-spacing:1.5px;
+  text-transform:uppercase; color:var(--muted);
+  padding:8px 4px 6px;
+  display:flex; align-items:center; gap:8px;
+}
+.crit-name-tag {
+  font-size:12px; font-weight:700; color:var(--text);
+  background:rgba(255,255,255,0.07);
+  padding:2px 10px; border-radius:8px;
+}
+
+.stu-row {
+  display:flex; align-items:center; gap:10px;
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:12px; padding:10px 12px; margin-bottom:6px;
+}
+.stu-num { font-size:12px; font-weight:800; color:var(--muted); min-width:20px; }
+.stu-name { flex:1; font-size:11px; font-weight:700; color:var(--text); line-height:1.3; }
+.note-inp {
+  width:52px; height:38px;
+  background:#0d1b2a; border:1.5px solid var(--border);
+  border-radius:10px; text-align:center;
+  color:var(--text); font-family:'Nunito',sans-serif;
+  font-size:15px; font-weight:800; outline:none;
+  transition:border-color 0.15s;
+}
+.note-inp:focus { border-color:var(--accent); }
+.note-inp.has { border-color:rgba(0,201,167,0.4); color:var(--accent); }
+
+/* EVALUATION - GENERAL VIEW */
+.gen-card {
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:14px; margin:0 12px 8px; padding:12px 14px;
+}
+.gen-name { font-size:12px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.gen-dims { display:flex; gap:6px; }
+.gen-dim { flex:1; text-align:center; }
+.gen-dim .gd-val {
+  font-family:'Oswald',sans-serif; font-size:18px; font-weight:700;
+}
+.gen-dim .gd-label { font-size:9px; font-weight:800; color:var(--muted); letter-spacing:1px; margin-top:1px; }
+.gen-total {
+  font-family:'Oswald',sans-serif; font-size:22px; font-weight:700;
+  text-align:right; margin-top:6px;
+}
+.low{color:#ff6b6b} .mid{color:#f7c948} .high{color:#4cff8a} .none{color:var(--muted)}
+
+/* ATTENDANCE */
+.att-row {
+  background:var(--card); border:1.5px solid var(--border);
+  border-radius:12px; padding:10px 12px; margin-bottom:6px;
+  display:flex; align-items:center; justify-content:space-between; gap:8px;
+}
+.att-info { display:flex; align-items:center; gap:8px; flex:1; min-width:0; }
+.att-num  { font-size:12px; font-weight:800; color:var(--muted); min-width:18px; }
+.att-name { font-size:11px; font-weight:700; color:var(--text); line-height:1.3; }
+.att-btns { display:flex; gap:4px; flex-shrink:0; }
+.abtn {
+  width:32px; height:32px; border-radius:9px;
+  border:1.5px solid var(--border); background:#0d1b2a;
+  color:var(--muted); font-family:'Nunito',sans-serif;
+  font-size:12px; font-weight:800; cursor:pointer; transition:all 0.12s;
+}
+.abtn:active{transform:scale(0.88)}
+.aa{background:#1a6e3a!important;border-color:#00c94a!important;color:#4cff8a!important}
+.af{background:#6e1a1a!important;border-color:#c90000!important;color:#ff6b6b!important}
+.ar{background:#5c4a00!important;border-color:#c9a400!important;color:#f7c948!important}
+.al{background:#1a3a6e!important;border-color:#004ac9!important;color:#6bb8ff!important}
+.au{background:#4a1a6e!important;border-color:#8a00c9!important;color:#d46bff!important}
+
+/* FIXED BOTTOM BTN */
+.fbot {
+  position:fixed; bottom:0; left:0; right:0;
+  padding:10px 14px; background:rgba(10,40,24,0.95); border-top:1px solid var(--border); backdrop-filter:blur(10px);
+  z-index:300;
+}
+.fbtn {
+  width:100%; border:none; color:#fff;
+  font-family:'Nunito',sans-serif; font-size:15px; font-weight:800;
+  padding:14px; border-radius:13px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.fbtn-green { background:linear-gradient(135deg,#00c9a7,#009e82); }
+.fbtn-blue  { background:linear-gradient(135deg,#1a6e9e,#0a3d62); }
+
+/* UPLOAD */
+.ubox {
+  background:var(--card); border:2px dashed var(--border);
+  border-radius:18px; padding:28px 18px; text-align:center;
+  cursor:pointer; margin:16px 14px;
+  transition:border-color 0.2s;
+}
+.ubox:hover { border-color:var(--accent); }
+.ubox .ui { font-size:44px; margin-bottom:10px; }
+.ubox h3 { font-size:15px; font-weight:800; margin-bottom:4px; }
+.ubox p  { font-size:12px; color:var(--muted); }
+
+.fload {
+  background:rgba(0,201,167,0.1); border:1.5px solid var(--accent);
+  border-radius:13px; padding:12px 16px; margin:0 14px;
+  display:flex; align-items:center; gap:10px;
+}
+.fload .fi { font-size:26px; }
+.fload .fn { font-size:12px; font-weight:700; color:var(--accent); }
+.fload .fs { font-size:10px; color:var(--muted); margin-top:1px; }
+
+/* STUDENT PROFILE */
+.profile-trim-block {
+  margin: 0 12px 14px;
+  background: rgba(255,255,255,0.07); border: 1.5px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.profile-trim-title {
+  font-size: 11px; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 10px 14px;
+  background: rgba(0,0,0,0.2);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.profile-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 14px; border-top: 1px solid var(--border);
+  font-size: 12px;
+}
+.profile-row .pr-label { color: var(--muted); font-weight: 600; }
+.profile-row .pr-val   { font-weight: 800; font-size: 14px; }
+.profile-section-title {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--muted);
+  padding: 12px 14px 6px;
+}
+
+/* FILIACIÓN */
+.fil-card {
+  background: rgba(255,255,255,0.07); border: 1.5px solid var(--border);
+  border-radius: 14px; margin: 0 12px 10px; overflow: hidden;
+}
+.fil-card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; cursor: pointer;
+  background: rgba(0,0,0,0.15);
+}
+.fil-num { font-size: 13px; font-weight: 800; color: var(--muted); min-width: 22px; }
+.fil-name { flex: 1; font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.fil-arrow { color: var(--muted); font-size: 16px; transition: transform 0.2s; }
+.fil-arrow.open { transform: rotate(90deg); }
+.fil-body { display: none; padding: 10px 0 4px; }
+.fil-body.open { display: block; }
+.fil-field { margin-bottom: 10px; }
+.fil-field label {
+  font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 4px;
+}
+.fil-readonly {
+  background: rgba(0,0,0,0.25); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 9px 12px;
+  font-size: 13px; font-weight: 700; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.fil-editable {
+  background: rgba(0,0,0,0.3); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 9px 12px;
+  font-size: 13px; font-weight: 600; color: var(--text);
+  width: 100%; font-family: 'Nunito', sans-serif;
+  outline: none; transition: border-color 0.15s;
+}
+.fil-editable:focus { border-color: var(--accent); }
+.fil-editable.has { border-color: rgba(0,201,167,0.4); color: var(--accent); }
+.fil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.stu-result-row {
+  background: rgba(255,255,255,0.07); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 8px;
+  cursor: pointer; transition: border-color 0.15s;
+  display: flex; align-items: center; gap: 10px;
+}
+.stu-result-row:active { border-color: var(--accent); }
+.stu-result-course {
+  font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700;
+  color: var(--accent); min-width: 40px;
+}
+.stu-result-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.stu-result-grade { font-size: 11px; color: var(--muted); margin-top: 2px; }
+/* STUDENT BOLETÍN PRINT */
+.stu-bol { background:#fff;color:#111;font-family:Arial,sans-serif;padding:20px; }
+.stu-bol-header { text-align:center;border-bottom:2px solid #0a3d62;padding-bottom:10px;margin-bottom:12px; }
+.stu-bol-header h2 { font-size:12px;color:#0a3d62;text-transform:uppercase;margin-bottom:2px; }
+.stu-bol-header p  { font-size:10px;color:#555; }
+.stu-bol-header h3 { font-size:14px;color:#0a3d62;margin-top:5px;font-weight:800; }
+.stu-bol-top { display:flex;gap:14px;margin-bottom:12px;align-items:flex-start; }
+.stu-bol-photo {
+  width:75px;height:95px;min-width:75px;
+  border:2px solid #0a3d62;border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:3px;background:#f0f4ff;
+}
+.stu-bol-photo .ph-icon { font-size:26px; }
+.stu-bol-photo .ph-text { font-size:7px;color:#888;text-align:center;line-height:1.2; }
+.stu-bol-info { flex:1; }
+.stu-bol-info table { width:100%;border-collapse:collapse;font-size:10px; }
+.stu-bol-info td { padding:3px 5px;border-bottom:1px solid #eee; }
+.stu-bol-info td:first-child { font-weight:700;color:#0a3d62;width:38%; }
+.stu-bol-trim { margin-bottom:10px; }
+.stu-bol-trim-title { background:#0a3d62;color:#fff;font-size:9px;font-weight:800;padding:4px 8px;text-transform:uppercase;letter-spacing:1px; }
+.stu-bol-trim table { width:100%;border-collapse:collapse;font-size:9px; }
+.stu-bol-trim th { background:#e8f0fe;color:#0a3d62;padding:3px 5px;text-align:center;border:1px solid #ddd; }
+.stu-bol-trim td { padding:3px 5px;text-align:center;border:1px solid #eee; }
+.stu-bol-trim td:first-child { text-align:left;font-weight:600; }
+.stu-bol-total { background:#0a3d62;color:#fff;padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;margin-top:10px; }
+.stu-bol-total .t-label { font-size:11px;font-weight:700; }
+.stu-bol-total .t-val { font-size:20px;font-weight:800; }
+.stu-bol-total .t-estado { font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px; }
+.t-aprobado { background:#4cff8a;color:#0a3d62; }
+.t-reprobado { background:#ff6b6b;color:#fff; }
+.stu-bol-firma { display:flex;justify-content:space-between;margin-top:18px;padding-top:10px;border-top:1px solid #ddd; }
+.stu-bol-firma-item { text-align:center;font-size:9px;color:#333; }
+.stu-bol-firma-line { width:110px;border-bottom:1px solid #333;margin:0 auto 4px; }
+
+.toast {
+  position:fixed; bottom:72px; left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:#1a6e3a; color:#4cff8a;
+  font-size:13px; font-weight:700;
+  padding:10px 22px; border-radius:30px;
+  opacity:0; transition:all 0.3s; z-index:999;
+  white-space:nowrap; border:1px solid #00c94a;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.toast.err  { background:#6e1a1a; color:#ff6b6b; border-color:#c90000; }
+
+/* legend chips */
+.legend { display:flex; gap:5px; padding:4px 14px 8px; flex-wrap:wrap; }
+.lchip {
+  font-size:10px; font-weight:800; padding:3px 9px; border-radius:20px;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== MAIN VIEW ========== -->
+<div id="vMain">
+  <div class="hdr" style="position:relative;">
+    <button onclick="openDocente()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.12);border:1.5px solid rgba(255,255,255,0.2);color:#fff;width:38px;height:38px;border-radius:12px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">⚙️</button>
+    <div class="hdr-logo">🏫</div>
+    <h1>U.E. San Javier</h1>
+    <p>Registro Pedagógico · Gestión 2026</p>
+    <div id="docenteNombreHdr" style="font-size:13px;font-weight:700;color:var(--accent);margin-top:5px;display:none;"></div>
+    <div class="badge">SECUNDARIA</div>
+  </div>
+
+  <div class="search-wrap">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="searchInp" placeholder="Buscar estudiante..." oninput="filterCards()">
+    </div>
+  </div>
+
+  <div class="sec-label">Seleccionar Curso</div>
+
+  <div class="grid2" id="cardsGrid">
+    <div class="ccard c1a" onclick="openCourse('1A','PRIMERO')">
+      <div><span class="gnum">1°</span><span class="gpar">A</span></div>
+      <div class="glvl">Primero Secundaria</div>
+      <div class="gmat" id="mat-1A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-1A"></div>
+      <div class="gcnt" id="cnt-1A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c2a" onclick="openCourse('2A','SEGUNDO')">
+      <div><span class="gnum">2°</span><span class="gpar">A</span></div>
+      <div class="glvl">Segundo Secundaria</div>
+      <div class="gmat" id="mat-2A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-2A"></div>
+      <div class="gcnt" id="cnt-2A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c2b" onclick="openCourse('2B','SEGUNDO')">
+      <div><span class="gnum">2°</span><span class="gpar">B</span></div>
+      <div class="glvl">Segundo Secundaria</div>
+      <div class="gmat" id="mat-2B" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-2B"></div>
+      <div class="gcnt" id="cnt-2B" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c3a" onclick="openCourse('3A','TERCERO')">
+      <div><span class="gnum">3°</span><span class="gpar">A</span></div>
+      <div class="glvl">Tercero Secundaria</div>
+      <div class="gmat" id="mat-3A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-3A"></div>
+      <div class="gcnt" id="cnt-3A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c3b" onclick="openCourse('3B','TERCERO')">
+      <div><span class="gnum">3°</span><span class="gpar">B</span></div>
+      <div class="glvl">Tercero Secundaria</div>
+      <div class="gmat" id="mat-3B" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-3B"></div>
+      <div class="gcnt" id="cnt-3B" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c4a" onclick="openCourse('4A','CUARTO')">
+      <div><span class="gnum">4°</span><span class="gpar">A</span></div>
+      <div class="glvl">Cuarto Secundaria</div>
+      <div class="gmat" id="mat-4A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-4A"></div>
+      <div class="gcnt" id="cnt-4A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c4b" onclick="openCourse('4B','CUARTO')">
+      <div><span class="gnum">4°</span><span class="gpar">B</span></div>
+      <div class="glvl">Cuarto Secundaria</div>
+      <div class="gmat" id="mat-4B" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-4B"></div>
+      <div class="gcnt" id="cnt-4B" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c5a" onclick="openCourse('5A','QUINTO')">
+      <div><span class="gnum">5°</span><span class="gpar">A</span></div>
+      <div class="glvl">Quinto Secundaria</div>
+      <div class="gmat" id="mat-5A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-5A"></div>
+      <div class="gcnt" id="cnt-5A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c5b" onclick="openCourse('5B','QUINTO')">
+      <div><span class="gnum">5°</span><span class="gpar">B</span></div>
+      <div class="glvl">Quinto Secundaria</div>
+      <div class="gmat" id="mat-5B" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-5B"></div>
+      <div class="gcnt" id="cnt-5B" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c6a" onclick="openCourse('6A','SEXTO')">
+      <div><span class="gnum">6°</span><span class="gpar">A</span></div>
+      <div class="glvl">Sexto Secundaria</div>
+      <div class="gmat" id="mat-6A" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-6A"></div>
+      <div class="gcnt" id="cnt-6A" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+    <div class="ccard c6b" onclick="openCourse('6B','SEXTO')">
+      <div><span class="gnum">6°</span><span class="gpar">B</span></div>
+      <div class="glvl">Sexto Secundaria</div>
+      <div class="gmat" id="mat-6B" style="font-size:13px;font-weight:800;color:rgba(255,255,255,0.95);margin-top:5px;min-height:16px;"></div>
+      <div style="font-size:10px;color:rgba(255,255,255,0.65);font-weight:600;margin-top:2px;" id="campo-6B"></div>
+      <div class="gcnt" id="cnt-6B" style="margin-top:5px;">— <span>estudiantes</span></div>
+    </div>
+  </div>
+  <div style="height:70px"></div>
+  <div class="bnav">
+    <div class="nitem active" id="navInicio" onclick="showMain()"><span class="ni">🏠</span>INICIO</div>
+    <div class="nitem" id="navBuscar" onclick="openStudentSearch()"><span class="ni">🔍</span>ESTUDIANTE</div>
+    <div class="nitem" id="navExport" onclick="openExport()"><span class="ni">📁</span>ARCHIVO</div>
+  </div>
+</div>
+
+<!-- ========== COURSE MENU VIEW ========== -->
+<div class="view" id="vCourse">
+  <div class="vhdr" id="courseHdr">
+    <button class="back-btn" onclick="closeView('vCourse')" style="width:100%;border-radius:12px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:8px;justify-content:center;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);">← VOLVER</button>
+    <h2 id="courseTitle" style="margin-top:10px;"></h2>
+    <p id="courseSub"></p>
+    <p id="courseMateria" style="font-size:13px;color:rgba(255,255,255,0.8);font-weight:700;margin-top:4px;"></p>
+  </div>
+  <div class="mgrid">
+    <div class="mcard hi" onclick="openFiliacion()">
+      <div class="mi">📌</div><div class="ml">Filiación</div><div class="ms">Datos del estudiante</div>
+    </div>
+    <div class="mcard hi" onclick="openAtt(1)">
+      <div class="mi">📆</div><div class="ml">Asistencia</div><div class="ms">1er · 2do · 3er Trim.</div>
+    </div>
+    <div class="mcard hi" onclick="openEvalDirect(1)">
+      <div class="mi">📊</div><div class="ml">Evaluación</div><div class="ms">SER · SABER · HACER</div>
+    </div>
+    <div class="mcard hi" onclick="openBoletin()">
+      <div class="mi">🗒️</div><div class="ml">Boletín</div><div class="ms">Resumen anual</div>
+    </div>
+    <div class="mcard full" style="background:rgba(0,150,255,0.1);border-color:#0096ff;" onclick="syncCourse()">
+      <div class="mi">🔄</div>
+      <div class="ml" style="font-size:14px;color:#0096ff;">Sincronizar con Excel</div>
+      <div class="ms" id="syncStatus">Guarda notas y asistencia en el archivo</div>
+    </div>
+    <div class="mcard full" style="background:rgba(247,201,72,0.08);border-color:#f7c948;" onclick="openAddStudent()">
+      <div class="mi">➕</div>
+      <div class="ml" style="font-size:14px;color:#f7c948;">Agregar Estudiante</div>
+      <div class="ms">Añadir un nuevo estudiante al curso</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== FILIACIÓN VIEW ========== -->
+<div class="view" id="vFiliacion">
+  <div class="vhdr" id="filHdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vFiliacion')">← VOLVER</button>
+    <h2 id="filTitle">Filiación</h2>
+    <p id="filSub"></p>
+  </div>
+  <div id="filBody" style="padding:8px 0 90px;"></div>
+  <div class="fbot">
+    <button class="fbtn fbtn-green" onclick="saveFiliacion()">💾 GUARDAR FILIACIÓN</button>
+  </div>
+</div>
+
+
+<div class="view" id="vConfig">
+  <div class="vhdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" id="configBackBtn" onclick="closeView('vConfig')">←</button>
+    <h2>Configurar Criterios</h2>
+    <p id="configSub"></p>
+  </div>
+  <div class="tabs" id="configTabs">
+    <div class="tab active" onclick="setConfigTrim(1)">1er TRIM.</div>
+    <div class="tab" onclick="setConfigTrim(2)">2do TRIM.</div>
+    <div class="tab" onclick="setConfigTrim(3)">3er TRIM.</div>
+  </div>
+  <div id="configBody" style="padding:6px 0 90px;"></div>
+  <div class="fbot">
+    <button class="fbtn fbtn-green" onclick="saveConfigAndEval()">✅ GUARDAR Y CALIFICAR</button>
+  </div>
+</div>
+
+<!-- ========== EVALUATION VIEW ========== -->
+<div class="view" id="vEval">
+  <div class="vhdr" id="evalHdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vEval')">← VOLVER</button>
+    <h2 id="evalTitle">Evaluación</h2>
+    <p id="evalSub"></p>
+  </div>
+  <!-- mode tabs + criterios btn -->
+  <div style="display:flex;gap:8px;padding:10px 14px 4px;align-items:center;">
+    <div class="tab active" id="tabCrit" style="flex:1" onclick="setEvalMode('crit')">📋 POR CRITERIO</div>
+    <div class="tab" id="tabGen" style="flex:1" onclick="setEvalMode('gen')">📊 VISTA GENERAL</div>
+    <button onclick="openConfigFromEval()" style="background:linear-gradient(135deg,#00c9a7,#009e82);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;padding:9px 13px;border-radius:10px;cursor:pointer;white-space:nowrap;">
+      ⚙️
+    </button>
+  </div>
+  <!-- trim tabs -->
+  <div class="tabs" id="evalTrimTabs">
+    <div class="tab active" onclick="setEvalTrim(1)">1er TRIM.</div>
+    <div class="tab" onclick="setEvalTrim(2)">2do TRIM.</div>
+    <div class="tab" onclick="setEvalTrim(3)">3er TRIM.</div>
+  </div>
+  <!-- dim pills (only for crit mode) -->
+  <div id="evalDimPills"></div>
+  <!-- list -->
+  <div id="evalBody" style="padding:4px 0 90px;"></div>
+  <div class="fbot">
+    <button class="fbtn fbtn-blue" onclick="saveEval()">💾 GUARDAR NOTAS</button>
+  </div>
+</div>
+
+<!-- ========== ATTENDANCE VIEW ========== -->
+<div class="view" id="vAtt">
+  <div class="vhdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vAtt')">← VOLVER</button>
+    <h2 id="attTitle">Asistencia</h2>
+    <p id="attSub"></p>
+  </div>
+  <!-- Trimester tabs -->
+  <div class="tabs" id="attTrimTabs">
+    <div class="tab active" onclick="setAttTrim(1)">1er TRIM.</div>
+    <div class="tab" onclick="setAttTrim(2)">2do TRIM.</div>
+    <div class="tab" onclick="setAttTrim(3)">3er TRIM.</div>
+  </div>
+  <div style="padding:10px 14px 4px;">
+    <div style="background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;">📅</span>
+      <div>
+        <div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;">FECHA</div>
+        <input type="date" id="attDate" style="background:none;border:none;outline:none;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;" onchange="onAttDateChange()">
+      </div>
+    </div>
+  </div>
+  <div class="legend">
+    <span class="lchip" style="background:#1a6e3a;color:#4cff8a;">A Asistió</span>
+    <span class="lchip" style="background:#6e1a1a;color:#ff6b6b;">F Falta</span>
+    <span class="lchip" style="background:#5c4a00;color:#f7c948;">R Retraso</span>
+    <span class="lchip" style="background:#1a3a6e;color:#6bb8ff;">L Licencia</span>
+    <span class="lchip" style="background:#4a1a6e;color:#d46bff;">U Sin uniforme</span>
+  </div>
+  <div id="attList" style="padding:0 12px;"></div>
+  <div style="height:80px;"></div>
+  <div class="fbot">
+    <button class="fbtn fbtn-green" onclick="saveAtt()">💾 GUARDAR ASISTENCIA</button>
+  </div>
+</div>
+
+<!-- ========== BOLETÍN VIEW ========== -->
+<div class="view" id="vBoletin">
+  <div class="vhdr" id="bolHdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vBoletin')">← VOLVER</button>
+    <h2 id="bolTitle">Boletín</h2>
+    <p id="bolSub"></p>
+  </div>
+  <div style="padding:10px 14px 4px;display:flex;gap:8px;">
+    <button onclick="printBoletin()" style="flex:1;background:linear-gradient(135deg,#1a6e9e,#0a3d62);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:11px;cursor:pointer;">🖨️ IMPRIMIR</button>
+    <button onclick="pdfBoletin()" style="flex:1;background:linear-gradient(135deg,#00c9a7,#009e82);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:11px;cursor:pointer;">📄 EXPORTAR PDF</button>
+  </div>
+  <div id="bolBody" style="padding:8px 12px 90px;"></div>
+</div>
+
+<!-- BOLETÍN PRINT STYLES -->
+<style>
+@media print {
+  body > *:not(#printArea) { display: none !important; }
+  #printArea {
+    display: block !important;
+    position: fixed; inset: 0;
+    background: #fff; z-index: 9999;
+    padding: 20px; color: #000;
+    font-family: Arial, sans-serif;
+  }
+}
+#printArea { display: none; }
+
+/* Boletín table */
+.bol-wrap { background: #fff; border-radius: 12px; padding: 14px; margin-bottom: 12px; color: #111; }
+.bol-header { text-align: center; margin-bottom: 10px; }
+.bol-header h3 { font-size: 13px; font-weight: 800; color: #0a3d62; text-transform: uppercase; margin-bottom: 2px; }
+.bol-header p  { font-size: 11px; color: #555; }
+.bol-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: #333; margin-bottom: 10px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+.bol-meta span { font-weight: 700; }
+
+.bol-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+.bol-table th {
+  background: #0a3d62; color: #fff;
+  padding: 5px 4px; text-align: center;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.5px;
+}
+.bol-table td {
+  padding: 5px 4px; text-align: center;
+  border-bottom: 1px solid #eee; color: #111;
+}
+.bol-table td.name-col { text-align: left; font-size: 9px; font-weight: 600; padding-left: 6px; }
+.bol-table tr:nth-child(even) td { background: #f7f9ff; }
+.bol-aprobado { color: #1a6e3a; font-weight: 800; }
+.bol-reprobado { color: #c90000; font-weight: 800; }
+
+.bol-stats { margin-top: 12px; }
+.bol-stats-title { font-size: 10px; font-weight: 800; color: #0a3d62; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; border-top: 1px solid #ddd; padding-top: 8px; }
+.bol-stats-table { width: 100%; border-collapse: collapse; font-size: 9px; }
+.bol-stats-table th { background: #1a6e9e; color: #fff; padding: 4px 6px; text-align: center; }
+.bol-stats-table td { padding: 4px 6px; text-align: center; border-bottom: 1px solid #eee; }
+.bol-stats-table td:first-child { text-align: left; font-weight: 600; }
+
+.bol-firma { display: flex; justify-content: space-between; margin-top: 20px; padding-top: 10px; border-top: 1px solid #ddd; }
+.bol-firma-item { text-align: center; font-size: 9px; color: #333; }
+.bol-firma-line { width: 120px; border-bottom: 1px solid #333; margin: 0 auto 4px; }
+</style>
+
+<div id="printArea"></div>
+
+
+<div class="view" id="vExport">
+  <div class="vhdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vExport')">← VOLVER</button>
+    <h2>Archivo Excel</h2>
+    <p>Cargá el registro original para sincronizar</p>
+  </div>
+  <div id="uploadArea">
+    <div class="ubox" onclick="document.getElementById('fileInp').click()"
+         ondragover="event.preventDefault();this.style.borderColor='var(--accent)'"
+         ondragleave="this.style.borderColor=''"
+         ondrop="handleDrop(event)">
+      <div class="ui">📁</div>
+      <h3>Cargar REGISTRO_2026__WINNi.xlsx</h3>
+      <p>Toca para seleccionar el archivo Excel original</p>
+    </div>
+    <input type="file" id="fileInp" accept=".xlsx,.xls" style="display:none" onchange="loadFile(event)">
+  </div>
+  <div id="fileLoaded" style="display:none;">
+    <div class="fload">
+      <span class="fi">✅</span>
+      <div>
+        <div class="fn" id="fName">—</div>
+        <div class="fs">Archivo listo · usá Sincronizar en cada curso</div>
+      </div>
+    </div>
+    <div style="padding:12px 14px 0;">
+      <button class="fbtn" style="background:rgba(255,255,255,0.08);border:1.5px solid var(--border);color:var(--muted);border-radius:13px;font-size:13px;" onclick="document.getElementById('fileInp').click()">
+        🔄 Cambiar archivo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== STUDENT SEARCH VIEW ========== -->
+<div class="view" id="vStudentSearch">
+  <div class="vhdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vStudentSearch');setNavActive('navInicio')">← VOLVER</button>
+    <h2>Buscar Estudiante</h2>
+    <p>Consultá el perfil completo</p>
+  </div>
+  <div style="padding:12px 14px 8px;">
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" id="stuSearchInp" placeholder="Escribe el nombre..." oninput="searchStudent()">
+    </div>
+  </div>
+  <div id="stuSearchResults" style="padding:0 12px;"></div>
+</div>
+
+<!-- ========== STUDENT PROFILE VIEW ========== -->
+<div class="view" id="vStudentProfile">
+  <div class="vhdr" id="profileHdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,201,167,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="closeView('vStudentProfile')">← VOLVER</button>
+    <h2 id="profileName"></h2>
+    <p id="profileSub"></p>
+  </div>
+  <div style="padding:10px 14px 4px;display:flex;gap:8px;">
+    <button onclick="printStudentBoletin()" style="flex:1;background:linear-gradient(135deg,#1a6e9e,#0a3d62);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:11px;cursor:pointer;">🖨️ IMPRIMIR</button>
+    <button onclick="pdfStudentBoletin()" style="flex:1;background:linear-gradient(135deg,#00c9a7,#009e82);border:none;color:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;padding:11px;border-radius:11px;cursor:pointer;">📄 PDF</button>
+  </div>
+  <div id="profileBody" style="padding:8px 0 90px;"></div>
+</div>
+
+<!-- ========== ADD STUDENT MODAL ========== -->
+<div id="modalAddStudent" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:500;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#132033;border:1.5px solid #1e3a5f;border-radius:20px;padding:24px;width:100%;max-width:360px;">
+    <h3 style="font-family:'Oswald',sans-serif;font-size:20px;color:var(--accent);margin-bottom:4px;">Agregar Estudiante</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:18px;" id="addStuCourse"></p>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);margin-bottom:5px;">APELLIDOS Y NOMBRES</div>
+      <input id="addStuName" type="text" placeholder="Apellidos y nombres completos..."
+        style="width:100%;background:#0d1b2a;border:1.5px solid #1e3a5f;border-radius:10px;padding:10px 14px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;">
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px;">GÉNERO</div>
+      <div style="display:flex;gap:10px;">
+        <button id="btnM" onclick="selectGender('M')"
+          style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #1e3a5f;background:#0d1b2a;color:var(--muted);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">
+          👦 Masculino
+        </button>
+        <button id="btnF" onclick="selectGender('F')"
+          style="flex:1;padding:10px;border-radius:10px;border:1.5px solid #1e3a5f;background:#0d1b2a;color:var(--muted);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">
+          👧 Femenino
+        </button>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button onclick="closeAddStudent()"
+        style="flex:1;padding:12px;border-radius:12px;border:1.5px solid #1e3a5f;background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">
+        Cancelar
+      </button>
+      <button onclick="confirmAddStudent()"
+        style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#f7c948,#c9a000);color:#0d1b2a;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;">
+        ✅ Agregar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DOCENTE CONFIG VIEW ========== -->
+<div class="view" id="vDocente">
+  <div class="vhdr" style="background:linear-gradient(135deg,#064d2e,#0a6b5a,#0d5c8a);">
+    <button class="back-btn" style="width:100%;border-radius:12px;font-size:14px;font-weight:800;display:flex;align-items:center;gap:8px;padding:10px;background:rgba(0,229,160,0.2);border:1.5px solid var(--accent);color:var(--accent);" onclick="saveDocente()">✅ GUARDAR Y VOLVER</button>
+    <h2 style="margin-top:10px;">⚙️ Perfil del Docente</h2>
+    <p>Configurá tus datos una sola vez</p>
+  </div>
+
+  <div style="padding:14px 14px 0;">
+    <!-- Datos personales -->
+    <div style="background:rgba(255,255,255,0.07);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:12px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;">DATOS PERSONALES</div>
+
+      <div style="margin-bottom:6px;">
+        <div style="font-size:10px;color:var(--muted);font-weight:700;letter-spacing:1px;margin-bottom:4px;">NOMBRE COMPLETO</div>
+        <input id="dcNombre" type="text" placeholder="Apellidos y nombres..."
+          style="width:100%;background:rgba(0,0,0,0.3);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;">
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:6px;">💡 El campo y materia se configuran por curso al entrar a cada uno.</p>
+    </div>
+
+    <!-- Cursos que regenta -->
+    <div style="background:rgba(255,255,255,0.07);border:1.5px solid var(--border);border-radius:14px;padding:14px;margin-bottom:80px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);margin-bottom:10px;">CURSOS QUE REGENTA</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Seleccioná los cursos a los que asistís. Solo esos aparecerán en la pantalla principal.</p>
+
+      <div id="dcCursosGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────
+const STUDENTS = {
+  "1A":[
+    {name:"AGUILERA MALDONADO JORGE MIGUEL",g:"M"},
+    {name:"APAZA MAMANI BRIAN EZEQUIEL",g:"M"},
+    {name:"CALLE MAMANI OMAR MARTIN",g:"M"},
+    {name:"CHALLCO MOLLINEDO ABEL MATIAS",g:"M"},
+    {name:"GUTIERREZ HINOJOSA SANTIAGO ROMAN",g:"M"},
+    {name:"GUTIERREZ SEJAS RANDY",g:"M"},
+    {name:"HUARICALLO CHOQUEHUANCA YERSON OSCAR",g:"M"},
+    {name:"LOPEZ MAYTA GABRIEL JAVIER",g:"M"},
+    {name:"PATTY BARRA MATIAS LEONEL",g:"M"},
+    {name:"UBERHUAGA NEGRON GABRIEL SEBASTIAN",g:"M"},
+    {name:"VARGAS FERNANDEZ LEONARDO DANIEL",g:"M"}
+  ],
+  "2A":[
+    {name:"FLORES ILLANES CRISTOFER ADALID",g:"M"},
+    {name:"LAURA CASTRO NEGUI IVANA",g:"F"},
+    {name:"LIMACHI APAZA IVET",g:"F"},
+    {name:"LIRA POMA FAVIAN ROTMY",g:"M"},
+    {name:"LOPEZ CAPCHA MARVIN SEBASTIAN",g:"M"},
+    {name:"MORALES DIAZ ROMINA",g:"F"},
+    {name:"RAMOS KUNO JHOEL AMILCAR",g:"M"},
+    {name:"TORREZ LAURA DAVID ALVARO",g:"M"},
+    {name:"VILLA ORTIZ LEANDRO ALEXIS",g:"M"}
+  ],
+  "2B":[
+    {name:"ALCON CHOQUE MARIANA SOLEDAD",g:"F"},
+    {name:"ARANDA CORDOVA EMILY MAYLEN",g:"F"},
+    {name:"GUTIERREZ SEJAS ADHEMAR",g:"M"},
+    {name:"MAMANI BAPTISTA ROMEL JESUS",g:"M"},
+    {name:"MANCILLA PILCOMAYO ALEJANDRO JHAMIL",g:"M"},
+    {name:"MENDOZA MACHICADO DAVID FERNANDO",g:"M"},
+    {name:"RIVERO MACIAS JAZMIN ROSA",g:"F"}
+  ],
+  "3A":[
+    {name:"CHIPUNAVI SULLCA JHOSTIN ALBERTO",g:"M"},
+    {name:"CORBAN MAMANI MATEO",g:"M"},
+    {name:"CRUZ HUACANI SARA RUHAMA",g:"F"},
+    {name:"HUARACHI HINOJOSA ARIANA",g:"F"},
+    {name:"MACUCHAPI APAZA NASIEL FERNANDO",g:"M"},
+    {name:"RAMIREZ AGUILAR GABRIEL JUAN JORGE",g:"M"},
+    {name:"SINKA CHOQUEHUANCA KEVIN JHERSON",g:"M"},
+    {name:"URQUIOLA MACHICADO DANIA SUSAN",g:"F"}
+  ],
+  "3B":[
+    {name:"ACARAPI MAMANI ABIGAIL HEICEL",g:"F"},
+    {name:"ARCE APAZA LUIS ARMANDO",g:"M"},
+    {name:"FARIÑAS VIDAL CEILY MARIA",g:"F"},
+    {name:"GONZALES ROJAS ANGEL MAURICIO",g:"M"},
+    {name:"MAMANI CHOQUE DAVID NESTOR",g:"M"},
+    {name:"PALOMINO MARQUEZ EZDENKA ALEXANDRA",g:"F"},
+    {name:"SERRANO MAMANI MELISA ALEJANDRA",g:"F"},
+    {name:"UBERHUAGA NEGRON NATALIA BRYANNA",g:"F"}
+  ],
+  "4A":[
+    {name:"ACEVEDO SEGALES FABIAN FERNANDO GERARDO",g:"M"},
+    {name:"APAZA MAMANI YAMILA",g:"F"},
+    {name:"ENCINAS LOPEZ ANAHI AYELEN",g:"F"},
+    {name:"LOPEZ MAMANI SILVANA",g:"F"},
+    {name:"TINCUTA QUISPE ANA GABRIELA",g:"F"},
+    {name:"TOLEDO CHIPANA BENJAMIN BEKEN",g:"M"},
+    {name:"TORREZ QUISBERT ANDY ROMAN",g:"M"},
+    {name:"VALDEZ CHAVEZ LEONEL MATEO",g:"M"},
+    {name:"ZAMBRANA SOSSA ALEYDA LUCIANA",g:"F"}
+  ],
+  "4B":[
+    {name:"ARANDA CORDOVA YAMILE ESPERANZA",g:"F"},
+    {name:"BUSTILLOS CABA LEONARDO NAHUEL",g:"M"},
+    {name:"DURAN DAVALOS ROBERTO AMIRKAN",g:"M"},
+    {name:"LAURA CASTRO AYDELIN BRISEYKA",g:"F"},
+    {name:"MENDOZA MACHICADO HENRRY CARLOS",g:"M"},
+    {name:"MENDOZA MACHICADO YANINA CARLA",g:"F"},
+    {name:"QUISPE CONDORI ANTHONY JOSUE",g:"M"},
+    {name:"TORREZ LAURA ELOY ALEJANDRO",g:"M"},
+    {name:"TORRICO TICONA VALENTINA NATALIA",g:"F"},
+    {name:"YUPANQUI CAHUAPAZA MARBEL DANIL",g:"M"}
+  ],
+  "5A":[
+    {name:"CARDOZO MAYTA LIZELLE ANGELA",g:"F"},
+    {name:"CHALCO WALSER MATEO NICOLAS",g:"M"},
+    {name:"CONDARCO CASAS CAMILA ALEJANDRA",g:"F"},
+    {name:"HUANCA SIRPA MATIAS NAZARENO",g:"M"},
+    {name:"ILLANES BRAVO DENNIS ZHAYLON",g:"M"},
+    {name:"ILLANES ILLANES ROCIO",g:"F"},
+    {name:"MAMANI NINA YEREMY BAYRON",g:"M"},
+    {name:"MENDOZA FLORES DEYBIS FRANCO",g:"M"},
+    {name:"PACHECO MUJICA JHONATAN RAUL",g:"M"},
+    {name:"PATTY BARRA VICTORIA",g:"F"},
+    {name:"QUISPE CHUQUIMIA LUZ NATALIA",g:"F"},
+    {name:"SAINZ UTRILLA AUDREY SAMANTHA",g:"F"}
+  ],
+  "5B":[
+    {name:"ACARAPI MAMANI ANGELI MELODY",g:"F"},
+    {name:"CHOQUE MAYTA BRENDA VANESA",g:"F"},
+    {name:"GOMEZ RODRIGUEZ ESTEBAN JORGE MANUEL",g:"M"},
+    {name:"MACOÑO VEGA CARLOS DANIEL",g:"M"},
+    {name:"MONTECINOS PACHECO LUZ ANAHI",g:"F"},
+    {name:"MONTECINOS PACHECO VESMER JAIR",g:"M"},
+    {name:"RAMOS KUNO JUAN JOSE",g:"M"},
+    {name:"ROCHA VEGA JAIRO DEMIAN",g:"M"},
+    {name:"SEA RIVERA BRENDA RAQUEL",g:"F"},
+    {name:"VALDEZ MAMANI JOSE MANUEL",g:"M"}
+  ],
+  "6A":[
+    {name:"GUTIERREZ QUIÑONES DIANA CIELO",g:"F"},
+    {name:"LAYME DIAZ RICKY DIEGO",g:"M"},
+    {name:"MAMANI BERNABE MATEO ABDIEL",g:"M"},
+    {name:"MONTAÑO CONDE DENISSE ADRIANA",g:"F"},
+    {name:"QUISPE CONDORI EILEEN MAGALI",g:"F"},
+    {name:"SARAVIA ALANOCA WILLIAMS ABDEL",g:"M"},
+    {name:"SORUCO DANZ MICAELA",g:"F"},
+    {name:"TRIBEÑO PEREZ JESHUA LION",g:"M"}
+  ],
+  "6B":[
+    {name:"ALVAREZ GUTIERREZ ANTHONY GEOVANNI",g:"M"},
+    {name:"ARIAS HUANCA BIANKA MICHEL",g:"F"},
+    {name:"CABANA BALBOA ANJHELY KIRAN",g:"F"},
+    {name:"CARVAJAL COYO ALEJANDRO",g:"M"},
+    {name:"CHOQUE BLANCO YERKO ITAN",g:"M"},
+    {name:"CONDARCO TORREZ EMILCE MAGALY",g:"F"},
+    {name:"MACHACA JIMENEZ ESTEBAN BRYAN",g:"M"},
+    {name:"NINA PAREDES DORIAN FABRICIO",g:"M"},
+    {name:"POMA ARHUATA MARISOL",g:"F"},
+    {name:"UBERHUAGA NEGRON MATEO THIAGO",g:"M"}
+  ]
+};
+
+// Course info — editable by teacher
+const COURSE_INFO = {};
+['1A','2A','2B','3A','3B','4A','4B','5A','5B','6A','6B'].forEach(c => {
+  COURSE_INFO[c] = {
+    docente: '',
+    campo: '',
+    area: ''
+  };
+});
+
+
+const COLORS = {
+  '1A':'linear-gradient(135deg,#00b09b,#0a7a6e)',
+  '2A':'linear-gradient(135deg,#e040fb,#9c27b0)',
+  '2B':'linear-gradient(135deg,#ff6d00,#e65100)',
+  '3A':'linear-gradient(135deg,#f7971e,#c76b00)',
+  '3B':'linear-gradient(135deg,#e91e8c,#a8005e)',
+  '4A':'linear-gradient(135deg,#11998e,#0a6e65)',
+  '4B':'linear-gradient(135deg,#3f51b5,#1a237e)',
+  '5A':'linear-gradient(135deg,#e53935,#b71c1c)',
+  '5B':'linear-gradient(135deg,#43a047,#1b5e20)',
+  '6A':'linear-gradient(135deg,#00acc1,#006064)',
+  '6B':'linear-gradient(135deg,#7b1fa2,#4a148c)'
+};
+
+// criteria[course][trim] = {ser:['','','',''], saber:['','','','','',''], hacer:['','','','',''] }
+const criteria = {};
+// scores[course][trim][studentIdx] = {ser:[null*4], saber:[null*6], hacer:[null*5], auto:null, extra:null}
+const scores = {};
+// attendance[course][trim][date][idx] = 'A'|'F'|'R'|'L'|'U'
+const attendance = {};
+
+Object.keys(STUDENTS).forEach(c => {
+  criteria[c] = {};
+  scores[c] = {};
+  attendance[c] = {};
+  const n = STUDENTS[c].length;
+  for(let t=1;t<=3;t++){
+    criteria[c][t] = {ser:['','','',''], saber:['','','','','',''], hacer:['','','','','']};
+    scores[c][t] = {};
+    attendance[c][t] = {};
+    for(let i=0;i<n;i++){
+      scores[c][t][i] = {ser:[null,null,null,null], saber:[null,null,null,null,null,null], hacer:[null,null,null,null,null], auto:null, extra:null};
+    }
+  }
+  document.getElementById('cnt-'+c).innerHTML = n+' <span>estudiantes</span>';
+});
+
+// ─── STATE ─────────────────────────────────────────────────────
+let CC='', CT=1; // current course, current trim
+let evalMode='crit', evalDim='ser-0', evalTrim=1;
+let configTrim=1;
+let attTrim=1, attData={};
+
+// ─── NAVIGATION ────────────────────────────────────────────────
+function openView(id){ document.getElementById(id).classList.add('open'); }
+function closeView(id){ document.getElementById(id).classList.remove('open'); }
+
+function openCourse(code, level){
+  CC = code;
+  const n = STUDENTS[code].length;
+  document.getElementById('courseTitle').textContent = level.charAt(0)+level.slice(1).toLowerCase()+' "'+code+'"';
+  document.getElementById('courseSub').textContent = n+' estudiantes · Secundaria';
+  document.getElementById('courseHdr').style.background = COLORS[code];
+  // Show materia as read-only info
+  const info = COURSE_INFO[code];
+  const matEl = document.getElementById('courseMateria');
+  if(info.area) matEl.textContent = '📚 ' + info.area + (info.campo ? '  ·  🔷 ' + info.campo : '');
+  else matEl.textContent = '';
+  openView('vCourse');
+}
+
+function openExport(){
+  openView('vExport');
+}
+
+function filterCards(){
+  const q = document.getElementById('searchInp').value.toLowerCase().trim();
+  // Check for exact single student match → go direct to profile
+  if(q.length >= 3){
+    let matches = [];
+    Object.keys(STUDENTS).forEach(code => {
+      STUDENTS[code].forEach((s,idx) => {
+        if(s.name.toLowerCase().includes(q)) matches.push({code,idx,name:s.name});
+      });
+    });
+    if(matches.length === 1){
+      // Direct to profile
+      openStudentProfileWrapped(matches[0].code, matches[0].idx);
+      document.getElementById('searchInp').value = '';
+      return;
+    }
+  }
+  document.querySelectorAll('.ccard').forEach(card => {
+    const onclick = card.getAttribute('onclick') || '';
+    const m = onclick.match(/'(\w+)'/);
+    if(!m) return;
+    const code = m[1];
+    const found = !q || STUDENTS[code].some(s => s.name.toLowerCase().includes(q));
+    // Respect docente course selection
+    const docenteHide = DOCENTE.cursos.length > 0 && !DOCENTE.cursos.includes(code);
+    card.style.display = (found && !docenteHide) ? '' : 'none';
+  });
+}
+
+// ─── CONFIG CRITERIOS ──────────────────────────────────────────
+function openConfig(trim){
+  configTrim = trim;
+  document.getElementById('configSub').textContent = CC;
+  setConfigTrim(trim);
+  openView('vConfig');
+}
+
+function setConfigTrim(t){
+  configTrim = t;
+  document.querySelectorAll('#configTabs .tab').forEach((tb,i) => tb.classList.toggle('active', i===t-1));
+  renderConfig();
+}
+
+function renderConfig(){
+  const crit = criteria[CC][configTrim];
+  const serKeys = ['D','E','F','G'];
+  const saberKeys = ['1','2','3','4','5','6'];
+  const hacerKeys = ['1','2','3','4','5'];
+
+  let html = '<div class="crit-section">';
+
+  // SER
+  html += '<div class="crit-dim-label"><span class="dim-tag dt-ser">SER / 10</span></div>';
+  serKeys.forEach((k,i) => {
+    html += `<div class="crit-row">
+      <span class="crit-key">${k}</span>
+      <input class="crit-inp" type="text" placeholder="Escribe el criterio..."
+        value="${crit.ser[i]}" oninput="criteria['${CC}'][${configTrim}].ser[${i}]=this.value">
+    </div>`;
+  });
+
+  // SABER
+  html += '<div class="crit-dim-label" style="margin-top:6px;"><span class="dim-tag dt-saber">SABER / 45</span></div>';
+  saberKeys.forEach((k,i) => {
+    html += `<div class="crit-row">
+      <span class="crit-key">${k}</span>
+      <input class="crit-inp" type="text" placeholder="Escribe el criterio..."
+        value="${crit.saber[i]}" oninput="criteria['${CC}'][${configTrim}].saber[${i}]=this.value">
+    </div>`;
+  });
+
+  // HACER
+  html += '<div class="crit-dim-label" style="margin-top:6px;"><span class="dim-tag dt-hacer">HACER / 40</span></div>';
+  hacerKeys.forEach((k,i) => {
+    html += `<div class="crit-row">
+      <span class="crit-key">${k}</span>
+      <input class="crit-inp" type="text" placeholder="Escribe el criterio..."
+        value="${crit.hacer[i]}" oninput="criteria['${CC}'][${configTrim}].hacer[${i}]=this.value">
+    </div>`;
+  });
+
+  html += '</div>';
+  document.getElementById('configBody').innerHTML = html;
+}
+
+let configFromEval = false; // track if config was opened from eval
+
+function openEvalDirect(trim){
+  evalTrim = trim;
+  evalMode = 'crit';
+  evalDim = 'ser-0';
+  openEval(trim);
+}
+
+function openConfigFromEval(){
+  configFromEval = true;
+  const vConfig = document.getElementById('vConfig');
+  vConfig.style.zIndex = '300';
+  openConfig(evalTrim);
+}
+
+function saveConfigAndEval(){
+  const vConfig = document.getElementById('vConfig');
+  vConfig.style.zIndex = '';
+  closeView('vConfig');
+  configFromEval = false;
+  evalTrim = configTrim;
+  evalMode = 'crit';
+  evalDim = 'ser-0';
+  if(window.fbSaveCriteria) window.fbSaveCriteria();
+  renderEvalDimPills();
+  renderEvalBody();
+}
+
+
+
+// ─── EVALUATION ────────────────────────────────────────────────
+function openEval(trim){
+  evalTrim = trim;
+  document.getElementById('evalTitle').textContent = 'Evaluación · '+CC;
+  document.getElementById('evalSub').textContent = 'SER · SABER · HACER';
+  document.getElementById('evalHdr').style.background = COLORS[CC];
+  setEvalTrimTabs(evalTrim);
+  setEvalMode(evalMode);
+  openView('vEval');
+}
+
+function setEvalMode(mode){
+  evalMode = mode;
+  document.getElementById('tabCrit').classList.toggle('active', mode==='crit');
+  document.getElementById('tabGen').classList.toggle('active',  mode==='gen');
+  document.getElementById('evalDimPills').style.display = mode==='crit' ? 'block' : 'none';
+  if(mode==='crit') renderEvalDimPills();
+  renderEvalBody();
+}
+
+function setEvalTrim(t){
+  evalTrim = t;
+  setEvalTrimTabs(t);
+  evalDim = 'ser-0'; // reset to first criterion of new trimester
+  if(evalMode==='crit') renderEvalDimPills();
+  renderEvalBody();
+}
+
+function setEvalTrimTabs(t){
+  document.querySelectorAll('#evalTrimTabs .tab').forEach((tb,i) => tb.classList.toggle('active', i===t-1));
+}
+
+// evalDim now stores 'ser-0', 'ser-1', 'saber-0', etc. or 'auto'
+function setEvalDim(dim){
+  evalDim = dim;
+  renderEvalDimPills();
+  renderEvalBody();
+}
+
+function renderEvalDimPills(){
+  const crit = criteria[CC][evalTrim];
+  const serKeys   = ['D','E','F','G'];
+  const saberKeys = ['1','2','3','4','5','6'];
+  const hacerKeys = ['1','2','3','4','5'];
+
+  // Detect active dimension type
+  const [dimType] = evalDim.split('-');
+
+  // Row 1: dimension buttons
+  let html = `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+    <div class="pill ${dimType==='ser'?'active-ser':''}"   onclick="selectDimGroup('ser')">SER</div>
+    <div class="pill ${dimType==='saber'?'active-saber':''}" onclick="selectDimGroup('saber')">SABER</div>
+    <div class="pill ${dimType==='hacer'?'active-hacer':''}" onclick="selectDimGroup('hacer')">HACER</div>
+    <div class="pill ${evalDim==='auto'?'active-auto':evalDim==='extra'?'active-auto':''}" onclick="selectDimGroup('auto')">AUTO</div>
+  </div>`;
+
+  // Row 2: criteria of selected dimension
+  if(dimType==='ser'){
+    html += `<div style="display:flex;gap:6px;flex-wrap:wrap;">`;
+    serKeys.forEach((k,i) => {
+      const id='ser-'+i;
+      const name = crit.ser[i] ? ` · ${crit.ser[i]}` : '';
+      html += `<div class="pill ${evalDim===id?'active-ser':''}" onclick="setEvalDim('${id}')">${k}${name}</div>`;
+    });
+    html += `</div>`;
+  } else if(dimType==='saber'){
+    html += `<div style="display:flex;gap:6px;flex-wrap:wrap;">`;
+    saberKeys.forEach((k,i) => {
+      const id='saber-'+i;
+      const name = crit.saber[i] ? ` · ${crit.saber[i]}` : '';
+      html += `<div class="pill ${evalDim===id?'active-saber':''}" onclick="setEvalDim('${id}')">${k}${name}</div>`;
+    });
+    html += `</div>`;
+  } else if(dimType==='hacer'){
+    html += `<div style="display:flex;gap:6px;flex-wrap:wrap;">`;
+    hacerKeys.forEach((k,i) => {
+      const id='hacer-'+i;
+      const name = crit.hacer[i] ? ` · ${crit.hacer[i]}` : '';
+      html += `<div class="pill ${evalDim===id?'active-hacer':''}" onclick="setEvalDim('${id}')">${k}${name}</div>`;
+    });
+    html += `</div>`;
+  } else if(dimType==='auto' || evalDim==='extra'){
+    html += `<div style="display:flex;gap:6px;flex-wrap:wrap;">
+      <div class="pill ${evalDim==='auto'?'active-auto':''}" onclick="setEvalDim('auto')">AUTO-EVAL</div>
+      <div class="pill ${evalDim==='extra'?'active-auto':''}" onclick="setEvalDim('extra')">PTS. EXTRA</div>
+    </div>`;
+  }
+
+  document.getElementById('evalDimPills').innerHTML = html;
+}
+
+function selectDimGroup(group){
+  if(group==='ser')   evalDim = 'ser-0';
+  else if(group==='saber') evalDim = 'saber-0';
+  else if(group==='hacer') evalDim = 'hacer-0';
+  else evalDim = 'auto';
+  renderEvalDimPills();
+  renderEvalBody();
+}
+
+function renderEvalBody(){
+  if(evalMode==='gen') renderGeneral();
+  else renderByDim();
+}
+
+function renderByDim(){
+  const students = STUDENTS[CC];
+  const crit = criteria[CC][evalTrim];
+  const sc = scores[CC][evalTrim];
+  let html = '';
+
+  const [dimType, ciStr] = evalDim.split('-');
+  const ci = parseInt(ciStr);
+
+  if(dimType === 'ser'){
+    const keys = ['D','E','F','G'];
+    const k = keys[ci];
+    const critName = crit.ser[ci] || '';
+    html += `<div class="crit-block">
+      <div class="crit-block-title" style="color:#6bb8ff;">
+        SER · ${k} <span class="crit-name-tag">${critName || '—'}</span>
+      </div>`;
+    students.forEach((s,si) => {
+      const v = sc[si].ser[ci];
+      html += `<div class="stu-row">
+        <span class="stu-num">${si+1}</span>
+        <span class="stu-name">${s.name}</span>
+        <input class="note-inp ${v!==null?'has':''}" type="number" min="0" max="10" step="0.5"
+          value="${v??''}"
+          oninput="scores['${CC}'][${evalTrim}][${si}].ser[${ci}]=this.value===''?null:parseFloat(this.value);this.className='note-inp '+(this.value?'has':'')">
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  else if(dimType === 'saber'){
+    const keys = ['1','2','3','4','5','6'];
+    const k = keys[ci];
+    const critName = crit.saber[ci] || '';
+    html += `<div class="crit-block">
+      <div class="crit-block-title" style="color:#f7c948;">
+        SABER · ${k} <span class="crit-name-tag">${critName || '—'}</span>
+      </div>`;
+    students.forEach((s,si) => {
+      const v = sc[si].saber[ci];
+      html += `<div class="stu-row">
+        <span class="stu-num">${si+1}</span>
+        <span class="stu-name">${s.name}</span>
+        <input class="note-inp ${v!==null?'has':''}" type="number" min="0" max="45" step="0.5"
+          value="${v??''}"
+          oninput="scores['${CC}'][${evalTrim}][${si}].saber[${ci}]=this.value===''?null:parseFloat(this.value);this.className='note-inp '+(this.value?'has':'')">
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  else if(dimType === 'hacer'){
+    const keys = ['1','2','3','4','5'];
+    const k = keys[ci];
+    const critName = crit.hacer[ci] || '';
+    html += `<div class="crit-block">
+      <div class="crit-block-title" style="color:#4cff8a;">
+        HACER · ${k} <span class="crit-name-tag">${critName || '—'}</span>
+      </div>`;
+    students.forEach((s,si) => {
+      const v = sc[si].hacer[ci];
+      html += `<div class="stu-row">
+        <span class="stu-num">${si+1}</span>
+        <span class="stu-name">${s.name}</span>
+        <input class="note-inp ${v!==null?'has':''}" type="number" min="0" max="40" step="0.5"
+          value="${v??''}"
+          oninput="scores['${CC}'][${evalTrim}][${si}].hacer[${ci}]=this.value===''?null:parseFloat(this.value);this.className='note-inp '+(this.value?'has':'')">
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  else if(evalDim === 'auto'){
+    html += `<div class="crit-block">
+      <div class="crit-block-title" style="color:#d46bff;">AUTO-EVALUACIÓN / 5</div>`;
+    STUDENTS[CC].forEach((s,si) => {
+      const v = sc[si].auto;
+      html += `<div class="stu-row">
+        <span class="stu-num">${si+1}</span>
+        <span class="stu-name">${s.name}</span>
+        <input class="note-inp ${v!==null?'has':''}" type="number" min="0" max="5" step="0.5"
+          value="${v??''}"
+          oninput="scores['${CC}'][${evalTrim}][${si}].auto=this.value===''?null:parseFloat(this.value);this.className='note-inp '+(this.value?'has':'')"
+        >
+      </div>`;
+    });
+    html += '</div>';
+
+    // Also show extras
+    html += `<div class="crit-block">
+      <div class="crit-block-title" style="color:#d46bff;">PUNTOS EXTRA</div>`;
+    STUDENTS[CC].forEach((s,si) => {
+      const v = sc[si].extra;
+      html += `<div class="stu-row">
+        <span class="stu-num">${si+1}</span>
+        <span class="stu-name">${s.name}</span>
+        <input class="note-inp ${v!==null?'has':''}" type="number" min="0" max="10" step="0.5"
+          value="${v??''}"
+          oninput="scores['${CC}'][${evalTrim}][${si}].extra=this.value===''?null:parseFloat(this.value);this.className='note-inp '+(this.value?'has':'')"
+        >
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  document.getElementById('evalBody').innerHTML = html;
+}
+
+function renderGeneral(){
+  const sc = scores[CC][evalTrim];
+  // Calculate progress
+  const total_criterios = 4 + 6 + 5 + 1; // ser+saber+hacer+auto = 16
+  let filled_criterios = 0;
+  let filled_students = 0;
+  const n = STUDENTS[CC].length;
+  STUDENTS[CC].forEach((s,si) => {
+    const s_ = scores[CC][evalTrim][si];
+    const vals = [...s_.ser,...s_.saber,...s_.hacer,s_.auto].filter(v=>v!==null);
+    if(vals.length > 0) filled_students++;
+    filled_criterios += vals.length;
+  });
+  const total_posible = total_criterios * n;
+  const pct = total_posible > 0 ? Math.round(filled_criterios/total_posible*100) : 0;
+  const pctColor = pct < 40 ? '#ff6b6b' : pct < 80 ? '#f7c948' : '#4cff8a';
+
+  // Update subtitle with progress
+  document.getElementById('evalSub').innerHTML =
+    `SER · SABER · HACER &nbsp;·&nbsp;
+     <span style="color:${pctColor};font-weight:800;">${filled_students}/${n} estudiantes · ${pct}%</span>`;
+
+  let html = '';
+  STUDENTS[CC].forEach((s,si) => {
+    const ser = prom(sc[si].ser);
+    const saber = prom(sc[si].saber);
+    const hacer = prom(sc[si].hacer);
+    const total = calcTotal(sc[si]);
+    const tc = total==='—'?'none':(parseFloat(total)<51?'low':parseFloat(total)<71?'mid':'high');
+    // Mini progress bar
+    const stu_filled = [...sc[si].ser,...sc[si].saber,...sc[si].hacer,sc[si].auto].filter(v=>v!==null).length;
+    const stu_pct = Math.round(stu_filled/total_criterios*100);
+    html += `<div class="gen-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+        <div class="gen-name" style="margin:0;">${si+1}. ${s.name}</div>
+        <div style="font-size:10px;color:var(--muted);font-weight:700;">${stu_filled}/${total_criterios}</div>
+      </div>
+      <div style="height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-bottom:8px;">
+        <div style="height:3px;background:${stu_pct===100?'#4cff8a':'var(--accent)'};border-radius:2px;width:${stu_pct}%;"></div>
+      </div>
+      <div class="gen-dims">
+        <div class="gen-dim"><div class="gd-val" style="color:#6bb8ff">${ser??'—'}</div><div class="gd-label">SER</div></div>
+        <div class="gen-dim"><div class="gd-val" style="color:#f7c948">${saber??'—'}</div><div class="gd-label">SABER</div></div>
+        <div class="gen-dim"><div class="gd-val" style="color:#4cff8a">${hacer??'—'}</div><div class="gd-label">HACER</div></div>
+        <div class="gen-dim"><div class="gd-val" style="color:#d46bff">${sc[si].auto??'—'}</div><div class="gd-label">AUTO</div></div>
+      </div>
+      <div class="gen-total ${tc}">${total}</div>
+    </div>`;
+  });
+  document.getElementById('evalBody').innerHTML = html;
+}
+
+function prom(arr){
+  const v = arr.filter(x => x!==null && x!==undefined);
+  if(!v.length) return null;
+  return Math.round((v.reduce((a,b)=>a+b,0)/v.length)*10)/10;
+}
+
+function calcTotal(sc){
+  const s = prom(sc.ser), sa = prom(sc.saber), h = prom(sc.hacer);
+  if(s===null && sa===null && h===null) return '—';
+  return Math.round(((s||0)+(sa||0)+(h||0)+(sc.auto||0)+(sc.extra||0))*10)/10;
+}
+
+function saveEval(){
+  let filled=0;
+  const n=STUDENTS[CC].length;
+  for(let i=0;i<n;i++){
+    const sc=scores[CC][evalTrim][i];
+    if([...sc.ser,...sc.saber,...sc.hacer,sc.auto,sc.extra].some(v=>v!==null)) filled++;
+  }
+  if(window.fbSaveScores) window.fbSaveScores();
+  toast(`✅ Notas guardadas · ${filled}/${n} estudiantes`);
+}
+
+// ─── ATTENDANCE ────────────────────────────────────────────────
+function openAtt(trim){
+  attTrim = trim;
+  document.getElementById('attTitle').textContent = `Asistencia · ${CC}`;
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('attDate').value = today;
+  attData = attendance[CC][trim][today] || {};
+  setAttTrimTabs(trim);
+  updateAttClassNum();
+  renderAtt();
+  openView('vAtt');
+}
+
+// Trimester month ranges
+const TRIM_MONTHS = {
+  1: {min:[2,1], max:[5,15]},  // Feb 1 - May 15
+  2: {min:[5,15], max:[8,31]}, // May 15 - Aug 31
+  3: {min:[9,1], max:[12,7]}   // Sep 1 - Dec 7
+};
+
+function validateAttDate(dateStr, trim){
+  const d = new Date(dateStr);
+  const month = d.getMonth() + 1;
+  const day   = d.getDate();
+  const {min, max} = TRIM_MONTHS[trim];
+  const afterMin  = month > min[0] || (month === min[0]  && day >= min[1]);
+  const beforeMax = month < max[0] || (month === max[0]  && day <= max[1]);
+  return afterMin && beforeMax;
+}
+
+function updateAttClassNum(){
+  const dates = Object.keys(attendance[CC][attTrim]).sort();
+  const currentDate = document.getElementById('attDate').value;
+  let classNum = dates.indexOf(currentDate) + 1;
+  if(classNum === 0) classNum = dates.length + 1;
+  const tn = {1:'1er',2:'2do',3:'3er'};
+
+  // Attendance stats
+  let totA=0, totF=0, totR=0, totL=0, totU=0;
+  dates.forEach(d => {
+    Object.values(attendance[CC][attTrim][d]).forEach(v => {
+      if(v==='A') totA++; else if(v==='F') totF++;
+      else if(v==='R') totR++; else if(v==='L') totL++;
+      else if(v==='U') totU++;
+    });
+  });
+  const totalReg = dates.length;
+
+  document.getElementById('attSub').innerHTML =
+    `${tn[attTrim]} Trim. · <b>Clase ${classNum}/28</b> · ${STUDENTS[CC].length} est.<br>
+     <span style="font-size:10px;opacity:0.8;">
+       ${totalReg} clases · ✅${totA} ❌${totF} ⏰${totR} 📋${totL} 👕${totU}
+     </span>`;
+}
+
+function setAttTrim(t){
+  attTrim = t;
+  setAttTrimTabs(t);
+  const date = document.getElementById('attDate').value;
+  attData = attendance[CC][t][date] || {};
+  updateAttClassNum();
+  renderAtt();
+}
+
+function setAttTrimTabs(t){
+  document.querySelectorAll('#attTrimTabs .tab').forEach((tb,i) => tb.classList.toggle('active', i===t-1));
+}
+
+function renderAtt(){
+  const list = document.getElementById('attList');
+  list.innerHTML = '';
+  STUDENTS[CC].forEach((s,idx) => {
+    const cur = attData[idx]||null;
+    const row = document.createElement('div');
+    row.className = 'att-row';
+    row.innerHTML = `
+      <div class="att-info">
+        <span class="att-num">${idx+1}</span>
+        <span class="att-name">${s.name}</span>
+      </div>
+      <div class="att-btns">
+        ${['A','F','R','L','U'].map(st=>`
+          <button class="abtn ${cur===st?'a'+st.toLowerCase():''}" onclick="setAtt(${idx},'${st}')">${st}</button>
+        `).join('')}
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+function setAtt(idx, st){
+  attData[idx] = st;
+  const d = document.getElementById('attDate').value;
+  attendance[CC][attTrim][d] = {...attData};
+  renderAtt();
+}
+
+
+function onAttDateChange(){
+  const date = document.getElementById('attDate').value;
+  if(date && !validateAttDate(date, attTrim)){
+    const tn = {1:'1er (Feb–May)',2:'2do (May–Ago)',3:'3er (Sep–Dic)'};
+    toast(`⚠️ Fecha fuera del ${tn[attTrim]} Trimestre`, true);
+  }
+  attData = attendance[CC][attTrim][date] || {};
+  updateAttClassNum();
+  renderAtt();
+}
+
+function saveAtt(){
+  const d = document.getElementById('attDate').value;
+  if(!d){ toast('❌ Seleccioná una fecha', true); return; }
+  if(!validateAttDate(d, attTrim)){
+    const tn = {1:'1er (Feb–May)',2:'2do (May–Ago)',3:'3er (Sep–Dic)'};
+    toast(`⚠️ Fecha fuera del ${tn[attTrim]} Trimestre`, true);
+    return;
+  }
+  const filled = Object.keys(attData).length;
+  attendance[CC][attTrim][d] = {...attData};
+  updateAttClassNum();
+  if(window.fbSaveAttendance) window.fbSaveAttendance();
+  toast(`✅ Clase guardada · ${filled}/${STUDENTS[CC].length} registrados`);
+}
+
+// ─── EXPORT ────────────────────────────────────────────────────
+let loadedWB = null;
+
+function handleDrop(e){
+  e.preventDefault();
+  const f = e.dataTransfer.files[0];
+  if(f) processFile(f);
+}
+function loadFile(e){ const f=e.target.files[0]; if(f) processFile(f); }
+
+function processFile(file){
+  const r = new FileReader();
+  r.onload = e => {
+    try{
+      loadedWB = XLSX.read(e.target.result, {type:'array'});
+      document.getElementById('fName').textContent = file.name;
+      document.getElementById('fileLoaded').style.display = 'block';
+      document.getElementById('uploadArea').style.display = 'none';
+      toast('✅ Archivo cargado');
+    }catch(err){ toast('❌ Error al leer el archivo', true); }
+  };
+  r.readAsArrayBuffer(file);
+}
+
+function syncCourse(){
+  if(!loadedWB){
+    toast('📁 Primero cargá el archivo Excel', true);
+    setTimeout(() => openExport(), 1200);
+    return;
+  }
+  const wb = loadedWB;
+  const tm = {1:'EV1', 2:'EV2', 3:'EV3'};
+  const la = {1:'LA1', 2:'LA2', 3:'LA3'};
+  let changed = 0;
+
+  // Sync evaluation scores
+  for(let t=1; t<=3; t++){
+    const sn = `${tm[t]}_${CC}`;
+    if(!wb.Sheets[sn]) continue;
+    const ws = wb.Sheets[sn];
+    STUDENTS[CC].forEach((s, idx) => {
+      const sc = scores[CC][t][idx];
+      const row = 13 + idx;
+      ['D','E','F','G'].forEach((col,i) => { if(sc.ser[i]!==null){ ws[col+row]={v:sc.ser[i],t:'n'}; changed++; } });
+      ['I','J','K','L','M','N'].forEach((col,i) => { if(sc.saber[i]!==null){ ws[col+row]={v:sc.saber[i],t:'n'}; changed++; } });
+      ['P','Q','R','S','T'].forEach((col,i) => { if(sc.hacer[i]!==null){ ws[col+row]={v:sc.hacer[i],t:'n'}; changed++; } });
+      if(sc.auto!==null){ ws['W'+row]={v:sc.auto,t:'n'}; changed++; }
+      if(sc.extra!==null){ ws['X'+row]={v:sc.extra,t:'n'}; changed++; }
+    });
+  }
+
+  // Sync attendance — ordenar fechas cronológicamente, columna = orden de fecha
+  for(let t=1; t<=3; t++){
+    const sn = `${la[t]}_${CC}`;
+    if(!wb.Sheets[sn]) continue;
+    const ws = wb.Sheets[sn];
+    const attByDate = attendance[CC][t];
+
+    // Sort dates chronologically
+    const sortedDates = Object.keys(attByDate).sort();
+
+    sortedDates.forEach((dateStr, classNum) => {
+      if(classNum >= 28) return; // max 28 columns
+      const col = colIndexToLetter(classNum + 3); // C=col3, D=col4...
+      const dayData = attByDate[dateStr];
+
+      // Write date label in row 9 header
+      const dateObj = new Date(dateStr);
+      const label = `${dateObj.getDate()}/${dateObj.getMonth()+1}`;
+      ws[col + '9'] = {v: label, t: 's'};
+
+      STUDENTS[CC].forEach((s, idx) => {
+        const row = 11 + idx;
+        const val = dayData[idx];
+        if(val){
+          ws[col + row] = {v: val, t: 's'};
+          changed++;
+        }
+      });
+    });
+  }
+
+  // Sync filiation editable fields (tutor, parentesco, telefono, direccion)
+  // FIL sheet: cols H=tutor, I=parentesco, J=telefono, K=direccion, students from row 9
+  const filSn = `FIL_${CC}`;
+  if(wb.Sheets[filSn]){
+    const filWs = wb.Sheets[filSn];
+    STUDENTS[CC].forEach((s, idx) => {
+      const ex = filExtra[CC][idx];
+      const row = 9 + idx;
+      if(ex.tutor)      { filWs['H'+row] = {v:ex.tutor,      t:'s'}; changed++; }
+      if(ex.parentesco) { filWs['I'+row] = {v:ex.parentesco, t:'s'}; changed++; }
+      if(ex.telefono)   { filWs['J'+row] = {v:ex.telefono,   t:'s'}; changed++; }
+      if(ex.direccion)  { filWs['K'+row] = {v:ex.direccion,  t:'s'}; changed++; }
+    });
+  }
+
+  XLSX.writeFile(wb, `REGISTRO_2026_${CC}_actualizado.xlsx`);
+  toast(`✅ ${CC} sincronizado · ${changed} celdas actualizadas`);
+  document.getElementById('syncStatus').textContent = `Última sync: ${new Date().toLocaleTimeString('es-BO')}`;
+}
+
+function colIndexToLetter(n){
+  let result = '';
+  while(n > 0){
+    n--;
+    result = String.fromCharCode(65 + (n % 26)) + result;
+    n = Math.floor(n / 26);
+  }
+  return result;
+}
+
+
+function doExport(){
+  if(!loadedWB){ toast('❌ Primero cargá el archivo', true); return; }
+  const wb = loadedWB;
+  const tm = {1:'EV1',2:'EV2',3:'EV3'};
+  let changed=0;
+  Object.keys(STUDENTS).forEach(code => {
+    for(let t=1;t<=3;t++){
+      const sn = `${tm[t]}_${code}`;
+      if(!wb.Sheets[sn]) return;
+      const ws = wb.Sheets[sn];
+      STUDENTS[code].forEach((s,idx) => {
+        const sc = scores[code][t][idx];
+        const row = 13+idx;
+        ['D','E','F','G'].forEach((col,i) => { if(sc.ser[i]!==null){ ws[col+row]={v:sc.ser[i],t:'n'}; changed++; } });
+        ['I','J','K','L','M','N'].forEach((col,i) => { if(sc.saber[i]!==null){ ws[col+row]={v:sc.saber[i],t:'n'}; changed++; } });
+        ['P','Q','R','S','T'].forEach((col,i) => { if(sc.hacer[i]!==null){ ws[col+row]={v:sc.hacer[i],t:'n'}; changed++; } });
+        if(sc.auto!==null){ ws['W'+row]={v:sc.auto,t:'n'}; changed++; }
+        if(sc.extra!==null){ ws['X'+row]={v:sc.extra,t:'n'}; changed++; }
+      });
+    }
+  });
+  XLSX.writeFile(wb,'REGISTRO_2026__WINNi_actualizado.xlsx');
+  toast(`✅ Excel generado · ${changed} celdas`);
+}
+
+// ─── NAVIGATION HELPERS ────────────────────────────────────────
+function showMain(){
+  closeView('vStudentSearch');
+  closeView('vExport');
+  setNavActive('navInicio');
+}
+function setNavActive(id){
+  ['navInicio','navBuscar','navExport'].forEach(n => {
+    document.getElementById(n).classList.toggle('active', n===id);
+  });
+}
+
+// ─── STUDENT SEARCH ────────────────────────────────────────────
+function openStudentSearch(){
+  document.getElementById('stuSearchInp').value = '';
+  document.getElementById('stuSearchResults').innerHTML = '';
+  openView('vStudentSearch');
+  setNavActive('navBuscar');
+  setTimeout(()=>document.getElementById('stuSearchInp').focus(), 300);
+}
+
+function searchStudent(){
+  const q = document.getElementById('stuSearchInp').value.toLowerCase().trim();
+  const res = document.getElementById('stuSearchResults');
+  if(q.length < 2){ res.innerHTML = ''; return; }
+
+  let results = [];
+  Object.keys(STUDENTS).forEach(code => {
+    STUDENTS[code].forEach((s, idx) => {
+      if(s.name.toLowerCase().includes(q)){
+        results.push({code, idx, name: s.name, gender: s.g});
+      }
+    });
+  });
+
+  if(!results.length){
+    res.innerHTML = `<div style="text-align:center;color:var(--muted);padding:30px;font-size:13px;">No se encontraron resultados</div>`;
+    return;
+  }
+
+  res.innerHTML = results.map(r => `
+    <div class="stu-result-row" onclick="openStudentProfileWrapped('${r.code}',${r.idx})">
+      <div class="stu-result-course">${r.code}</div>
+      <div>
+        <div class="stu-result-name">${r.name}</div>
+        <div class="stu-result-grade">${gradeLabel(r.code)} · ${r.gender==='M'?'Masculino':'Femenino'}</div>
+      </div>
+      <span style="color:var(--muted);font-size:18px;">›</span>
+    </div>`).join('');
+}
+
+function gradeLabel(code){
+  const map = {'1A':'1° A','2A':'2° A','2B':'2° B','3A':'3° A','3B':'3° B',
+                '4A':'4° A','4B':'4° B','5A':'5° A','5B':'5° B','6A':'6° A','6B':'6° B'};
+  return map[code] || code;
+}
+const GRADE_LABELS = {'1A':'1° A','2A':'2° A','2B':'2° B','3A':'3° A','3B':'3° B',
+  '4A':'4° A','4B':'4° B','5A':'5° A','5B':'5° B','6A':'6° A','6B':'6° B'};
+
+// ─── STUDENT PROFILE ───────────────────────────────────────────
+function openStudentProfile(code, idx){
+  const s = STUDENTS[code][idx];
+  document.getElementById('profileName').textContent = s.name;
+  document.getElementById('profileSub').textContent = gradeLabel(code)+' Secundaria';
+  document.getElementById('profileHdr').style.background = COLORS[code];
+  renderProfile(code, idx);
+  openView('vStudentProfile');
+}
+
+function renderProfile(code, idx){
+  const trimNames = {1:'1er Trimestre', 2:'2do Trimestre', 3:'3er Trimestre'};
+  let html = '';
+
+  for(let t=1; t<=3; t++){
+    const sc = scores[code][t][idx];
+    const att = attendance[code][t];
+    const crit = criteria[code][t];
+
+    // Count attendance
+    let asist=0, faltas=0, retrasos=0, licencias=0, uniforme=0;
+    Object.values(att).forEach(dayData => {
+      const v = dayData[idx];
+      if(v==='A') asist++;
+      else if(v==='F') faltas++;
+      else if(v==='R') retrasos++;
+      else if(v==='L') licencias++;
+      else if(v==='U') uniforme++;
+    });
+
+    const serProm  = prom(sc.ser);
+    const saberProm= prom(sc.saber);
+    const hacerProm= prom(sc.hacer);
+    const total    = calcTotal(sc);
+    const tc = total==='—'?'none':(parseFloat(total)<51?'low':parseFloat(total)<71?'mid':'high');
+
+    // Build collapsible criteria rows
+    const serKeys   = ['D','E','F','G'];
+    const saberKeys = ['1','2','3','4','5','6'];
+    const hacerKeys = ['1','2','3','4','5'];
+
+    const serDetail = serKeys.map((k,i) => {
+      const name = crit.ser[i] || k;
+      const v = sc.ser[i];
+      return `<div class="profile-row" style="padding-left:22px;background:rgba(107,184,255,0.04);">
+        <span class="pr-label">${k} · ${name}</span>
+        <span class="pr-val" style="font-size:13px;color:#6bb8ff">${v!==null?v:'—'}</span>
+      </div>`;
+    }).join('');
+
+    const saberDetail = saberKeys.map((k,i) => {
+      const name = crit.saber[i] || k;
+      const v = sc.saber[i];
+      return `<div class="profile-row" style="padding-left:22px;background:rgba(247,201,72,0.04);">
+        <span class="pr-label">${k} · ${name}</span>
+        <span class="pr-val" style="font-size:13px;color:#f7c948">${v!==null?v:'—'}</span>
+      </div>`;
+    }).join('');
+
+    const hacerDetail = hacerKeys.map((k,i) => {
+      const name = crit.hacer[i] || k;
+      const v = sc.hacer[i];
+      return `<div class="profile-row" style="padding-left:22px;background:rgba(76,255,138,0.04);">
+        <span class="pr-label">${k} · ${name}</span>
+        <span class="pr-val" style="font-size:13px;color:#4cff8a">${v!==null?v:'—'}</span>
+      </div>`;
+    }).join('');
+
+    html += `<div class="profile-section-title">${trimNames[t]}</div>
+    <div class="profile-trim-block">
+
+      <!-- ASISTENCIA -->
+      <div class="profile-trim-title" onclick="toggleSection('att-${t}-${idx}-${code}')" style="cursor:pointer;">
+        <span>📅 ASISTENCIA</span>
+        <span style="color:var(--muted);font-size:14px;" id="arr-att-${t}-${idx}-${code}">›</span>
+      </div>
+      <div id="att-${t}-${idx}-${code}" style="display:none;">
+        <div class="profile-row">
+          <span class="pr-label">✅ Asistencias</span>
+          <span class="pr-val" style="color:#4cff8a">${asist}</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-label">❌ Faltas</span>
+          <span class="pr-val" style="color:#ff6b6b">${faltas}</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-label">⏰ Retrasos</span>
+          <span class="pr-val" style="color:#f7c948">${retrasos}</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-label">📋 Licencias</span>
+          <span class="pr-val" style="color:#6bb8ff">${licencias}</span>
+        </div>
+        <div class="profile-row">
+          <span class="pr-label">👕 Sin uniforme</span>
+          <span class="pr-val" style="color:#d46bff">${uniforme}</span>
+        </div>
+      </div>
+
+      <!-- EVALUACIÓN -->
+      <div class="profile-trim-title" style="cursor:pointer;margin-top:1px;" onclick="toggleSection('ev-${t}-${idx}-${code}')">
+        <span>📝 EVALUACIÓN</span>
+        <span class="pr-val ${tc}">${total} <span style="color:var(--muted);font-size:14px;" id="arr-ev-${t}-${idx}-${code}">›</span></span>
+      </div>
+      <div id="ev-${t}-${idx}-${code}" style="display:none;">
+
+        <!-- SER -->
+        <div class="profile-row" style="cursor:pointer;" onclick="toggleSection('ser-${t}-${idx}-${code}')">
+          <span class="pr-label" style="color:#6bb8ff;font-weight:800;">SER / 10</span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="pr-val" style="color:#6bb8ff">${serProm??'—'}</span>
+            <span style="color:var(--muted);font-size:13px;" id="arr-ser-${t}-${idx}-${code}">›</span>
+          </span>
+        </div>
+        <div id="ser-${t}-${idx}-${code}" style="display:none;">${serDetail}</div>
+
+        <!-- SABER -->
+        <div class="profile-row" style="cursor:pointer;" onclick="toggleSection('saber-${t}-${idx}-${code}')">
+          <span class="pr-label" style="color:#f7c948;font-weight:800;">SABER / 45</span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="pr-val" style="color:#f7c948">${saberProm??'—'}</span>
+            <span style="color:var(--muted);font-size:13px;" id="arr-saber-${t}-${idx}-${code}">›</span>
+          </span>
+        </div>
+        <div id="saber-${t}-${idx}-${code}" style="display:none;">${saberDetail}</div>
+
+        <!-- HACER -->
+        <div class="profile-row" style="cursor:pointer;" onclick="toggleSection('hacer-${t}-${idx}-${code}')">
+          <span class="pr-label" style="color:#4cff8a;font-weight:800;">HACER / 40</span>
+          <span style="display:flex;align-items:center;gap:6px;">
+            <span class="pr-val" style="color:#4cff8a">${hacerProm??'—'}</span>
+            <span style="color:var(--muted);font-size:13px;" id="arr-hacer-${t}-${idx}-${code}">›</span>
+          </span>
+        </div>
+        <div id="hacer-${t}-${idx}-${code}" style="display:none;">${hacerDetail}</div>
+
+        ${sc.auto!==null?`<div class="profile-row">
+          <span class="pr-label" style="color:#d46bff">AUTO-EVAL / 5</span>
+          <span class="pr-val" style="color:#d46bff">${sc.auto}</span>
+        </div>`:''}
+        ${sc.extra!==null?`<div class="profile-row">
+          <span class="pr-label">Pts. Extra</span>
+          <span class="pr-val" style="color:var(--accent2)">${sc.extra}</span>
+        </div>`:''}
+      </div>
+
+    </div>`;
+  }
+
+  document.getElementById('profileBody').innerHTML = html;
+}
+
+function toggleSection(id){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  const arr = document.getElementById('arr-'+id);
+  if(arr) arr.style.transform = open ? '' : 'rotate(90deg)';
+}
+
+let currentStuCode = '', currentStuIdx = 0;
+
+function openStudentProfileWrapped(code, idx){
+  currentStuCode = code;
+  currentStuIdx = idx;
+  openStudentProfile(code, idx);
+}
+
+function buildStudentBoletin(){
+  const code = currentStuCode;
+  const idx  = currentStuIdx;
+  const s    = STUDENTS[code][idx];
+  const fd   = (FIL_DATA[code] || [])[idx] || {};
+  const ex   = filExtra[code][idx] || {};
+  const ci   = fd.ci || ex.ci || '—';
+  const rude = fd.rude || ex.rude || '—';
+  const fnac = fd.fnac || ex.fnac || '—';
+  const info = COURSE_INFO[code];
+  const trimNames = {1:'1er Trimestre', 2:'2do Trimestre', 3:'3er Trimestre'};
+
+  let trimsHtml = '';
+  let totales = [];
+
+  for(let t=1; t<=3; t++){
+    const sc = scores[code][t][idx];
+    const crit = criteria[code][t];
+    const serP  = prom(sc.ser);
+    const saberP= prom(sc.saber);
+    const hacerP= prom(sc.hacer);
+    const total = calcTotal(sc);
+    const tv = total === '—' ? null : parseFloat(total);
+    if(tv !== null) totales.push(tv);
+
+    trimsHtml += `<div class="stu-bol-trim">
+      <div class="stu-bol-trim-title">${trimNames[t]}</div>
+      <table>
+        <thead><tr>
+          <th>DIMENSIÓN</th><th>CRITERIOS</th><th>PROMEDIO</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td>SER / 10</td>
+            <td style="text-align:left;font-size:8px;">${['D','E','F','G'].map((k,i)=>`${crit.ser[i]||k}: ${sc.ser[i]??'—'}`).join(' · ')}</td>
+            <td><b>${serP??'—'}</b></td>
+          </tr>
+          <tr>
+            <td>SABER / 45</td>
+            <td style="text-align:left;font-size:8px;">${['1','2','3','4','5','6'].map((k,i)=>`${crit.saber[i]||k}: ${sc.saber[i]??'—'}`).join(' · ')}</td>
+            <td><b>${saberP??'—'}</b></td>
+          </tr>
+          <tr>
+            <td>HACER / 40</td>
+            <td style="text-align:left;font-size:8px;">${['1','2','3','4','5'].map((k,i)=>`${crit.hacer[i]||k}: ${sc.hacer[i]??'—'}`).join(' · ')}</td>
+            <td><b>${hacerP??'—'}</b></td>
+          </tr>
+          <tr>
+            <td>AUTO-EVAL / 5</td><td>—</td><td><b>${sc.auto??'—'}</b></td>
+          </tr>
+          <tr style="background:#f0f4ff;">
+            <td colspan="2"><b>TOTAL</b></td>
+            <td><b>${total}</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  const promAnual = totales.length ? Math.round(totales.reduce((a,b)=>a+b,0)/totales.length) : null;
+  const estado = promAnual === null ? '—' : promAnual >= 51 ? 'APROBADO' : 'REPROBADO';
+  const estClass = estado === 'APROBADO' ? 't-aprobado' : estado === 'REPROBADO' ? 't-reprobado' : '';
+
+  return `<div class="stu-bol">
+    <div class="stu-bol-header">
+      <h2>🏫 Unidad Educativa Técnico Humanístico "San Javier"</h2>
+      <p>Dpto: La Paz · Distrito: La Paz 1 · Turno: Tarde · Pública Fiscal</p>
+      <h3>BOLETÍN INDIVIDUAL · GESTIÓN 2026</h3>
+    </div>
+
+    <div class="stu-bol-top">
+      <div class="stu-bol-photo">
+        <span class="ph-icon">👤</span>
+        <span class="ph-text">Foto<br>documento</span>
+      </div>
+      <div class="stu-bol-info">
+        <table>
+          <tr><td>Apellidos y Nombres:</td><td><b>${s.name}</b></td></tr>
+          <tr><td>Curso:</td><td>${GRADE_LABELS[code]} Secundaria</td></tr>
+          <tr><td>N° C.I.:</td><td>${ci}</td></tr>
+          <tr><td>N° RUDE:</td><td>${rude}</td></tr>
+          <tr><td>Fecha Nac.:</td><td>${fnac}</td></tr>
+          <tr><td>Género:</td><td>${s.g === 'M' ? 'Masculino' : 'Femenino'}</td></tr>
+          <tr><td>Docente:</td><td>${info.docente||'—'}</td></tr>
+          <tr><td>Área:</td><td>${info.area}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    ${trimsHtml}
+
+    <div class="stu-bol-total">
+      <span class="t-label">PROMEDIO ANUAL</span>
+      <span class="t-val">${promAnual??'—'}</span>
+      <span class="t-estado ${estClass}">${estado}</span>
+    </div>
+
+    <div class="stu-bol-firma">
+      <div class="stu-bol-firma-item">
+        <div class="stu-bol-firma-line"></div>
+        <div>PROFESOR/A</div>
+        <div>${info.area}</div>
+      </div>
+      <div class="stu-bol-firma-item">
+        <div class="stu-bol-firma-line"></div>
+        <div>Msc. J. FERNANDO SANDOVAL RODRIGUEZ</div>
+        <div>DIRECTOR U.E.T.H. "SAN JAVIER"</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function printStudentBoletin(){
+  const pa = document.getElementById('printArea');
+  pa.innerHTML = buildStudentBoletin();
+  pa.style.display = 'block';
+  window.print();
+  pa.style.display = 'none';
+  pa.innerHTML = '';
+}
+
+function pdfStudentBoletin(){
+  const pa = document.getElementById('printArea');
+  pa.innerHTML = buildStudentBoletin();
+  pa.style.display = 'block';
+  window.print();
+  pa.style.display = 'none';
+  pa.innerHTML = '';
+  toast('💡 En el diálogo elegí "Guardar como PDF"');
+}
+
+// ─── NOTE VALIDATION ───────────────────────────────────────────
+function validateNote(input, min, max){
+  let v = input.value;
+  if(v === '') return;
+  // Remove decimals — round to integer
+  v = Math.round(parseFloat(v));
+  // Clamp to range
+  if(v < min) v = min;
+  if(v > max) v = max;
+  input.value = v;
+  input.className = 'note-inp has';
+}
+
+function saveNote(input, code, trim, si, dim, ci){
+  const v = input.value === '' ? null : Math.round(parseFloat(input.value));
+  if(v !== null){
+    // Final clamp on blur
+    const maxMap = {ser:10, saber:45, hacer:40, auto:5, extra:20};
+    const max = maxMap[dim] || 100;
+    input.value = Math.min(Math.max(v, 0), max);
+  }
+  if(dim === 'auto')  scores[code][trim][si].auto  = v;
+  else if(dim === 'extra') scores[code][trim][si].extra = v;
+  else scores[code][trim][si][dim][ci] = v;
+  input.className = 'note-inp ' + (v !== null ? 'has' : '');
+}
+
+// ─── ADD STUDENT ───────────────────────────────────────────────
+let addStuGender = 'M';
+
+function openAddStudent(){
+  addStuGender = 'M';
+  document.getElementById('addStuName').value = '';
+  document.getElementById('addStuCourse').textContent = GRADE_LABELS[CC] + ' Secundaria';
+  selectGender('M');
+  document.getElementById('modalAddStudent').style.display = 'flex';
+  setTimeout(() => document.getElementById('addStuName').focus(), 200);
+}
+
+function closeAddStudent(){
+  document.getElementById('modalAddStudent').style.display = 'none';
+}
+
+function selectGender(g){
+  addStuGender = g;
+  const btnM = document.getElementById('btnM');
+  const btnF = document.getElementById('btnF');
+  btnM.style.background = g==='M' ? 'rgba(107,184,255,0.2)' : '#0d1b2a';
+  btnM.style.borderColor = g==='M' ? '#6bb8ff' : '#1e3a5f';
+  btnM.style.color = g==='M' ? '#6bb8ff' : 'var(--muted)';
+  btnF.style.background = g==='F' ? 'rgba(255,107,180,0.2)' : '#0d1b2a';
+  btnF.style.borderColor = g==='F' ? '#ff6bb4' : '#1e3a5f';
+  btnF.style.color = g==='F' ? '#ff6bb4' : 'var(--muted)';
+}
+
+function confirmAddStudent(){
+  const name = document.getElementById('addStuName').value.trim().toUpperCase();
+  if(!name){ toast('❌ Escribe el nombre del estudiante', true); return; }
+  STUDENTS[CC].push({name, g: addStuGender, manual: true});
+  const idx = STUDENTS[CC].length - 1;
+  for(let t=1;t<=3;t++){
+    scores[CC][t][idx] = {ser:[null,null,null,null], saber:[null,null,null,null,null,null], hacer:[null,null,null,null,null], auto:null, extra:null};
+  }
+  filExtra[CC][idx] = {tutor:'', parentesco:'', telefono:'', direccion:'', ci:'', rude:'', fnac:''};
+  document.getElementById('cnt-'+CC).innerHTML = STUDENTS[CC].length+' <span>estudiantes</span>';
+  document.getElementById('courseSub').textContent = STUDENTS[CC].length+' estudiantes · Secundaria';
+  closeAddStudent();
+  toast(`✅ ${name} agregado/a al curso`);
+}
+
+// ─── MATERIA → CAMPO MAP ───────────────────────────────────────
+const MATERIA_CAMPO = {
+  'Espiritualidad y Religiones': 'COSMOS Y PENSAMIENTO',
+  'Filosofía':                   'COSMOS Y PENSAMIENTO',
+  'Psicología':                  'COSMOS Y PENSAMIENTO',
+  'Comunicación y Lenguajes':    'COMUNIDAD Y SOCIEDAD',
+  'Lengua Originaria':           'COMUNIDAD Y SOCIEDAD',
+  'Lengua Extranjera':           'COMUNIDAD Y SOCIEDAD',
+  'Ciencias Sociales':           'COMUNIDAD Y SOCIEDAD',
+  'Educación Física y Deportes': 'COMUNIDAD Y SOCIEDAD',
+  'Educación Musical':           'COMUNIDAD Y SOCIEDAD',
+  'Artes Plásticas y Visuales':  'COMUNIDAD Y SOCIEDAD',
+  'Ciencias Naturales':          'VIDA TIERRA TERRITORIO',
+  'Biología y Geografía':        'VIDA TIERRA TERRITORIO',
+  'Física':                      'VIDA TIERRA TERRITORIO',
+  'Química':                     'VIDA TIERRA TERRITORIO',
+  'Matemática':                  'CIENCIA TECNOLOGÍA Y PRODUCCIÓN',
+  'Técnica Tecnológica':         'CIENCIA TECNOLOGÍA Y PRODUCCIÓN',
+};
+
+function setMateriaDoc(code, materia){
+  const campo = MATERIA_CAMPO[materia] || '';
+  COURSE_INFO[code].area  = materia;
+  COURSE_INFO[code].campo = campo;
+  const campoEl = document.getElementById('dc-campo-'+code);
+  if(campoEl) campoEl.textContent = campo ? '🔷 ' + campo : '';
+}
+
+
+const DOCENTE = {
+  nombre: '',
+  campo: '',
+  area: '',
+  cursos: ['1A','2A','2B','3A','3B','4A','4B','5A','5B','6A','6B'] // all by default
+};
+
+const COURSE_NAMES = {
+  '1A':'1° A','2A':'2° A','2B':'2° B','3A':'3° A','3B':'3° B',
+  '4A':'4° A','4B':'4° B','5A':'5° A','5B':'5° B','6A':'6° A','6B':'6° B'
+};
+
+function openDocente(){
+  document.getElementById('dcNombre').value = DOCENTE.nombre;
+
+  // Build course checkboxes with materia input
+  const grid = document.getElementById('dcCursosGrid');
+  grid.innerHTML = Object.keys(COURSE_NAMES).map(code => {
+    const checked = DOCENTE.cursos.includes(code);
+    const materia = COURSE_INFO[code].area || '';
+    return `<div id="dc-${code}"
+      style="background:${checked?'rgba(0,229,160,0.12)':'rgba(255,255,255,0.05)'};
+             border:1.5px solid ${checked?'var(--accent)':'var(--border)'};
+             border-radius:12px;padding:10px;transition:all 0.15s;">
+      <div onclick="toggleCursoDoc('${code}')" style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-bottom:${checked?'8px':'0'};">
+        <div style="font-family:'Oswald',sans-serif;font-size:18px;font-weight:700;color:${checked?'var(--accent)':'var(--muted)'};">${COURSE_NAMES[code]}</div>
+        <div style="font-size:18px;">${checked?'✅':'➕'}</div>
+      </div>
+      <div id="dc-inp-${code}" style="display:${checked?'block':'none'};">
+        <select onchange="setMateriaDoc('${code}',this.value)"
+          style="width:100%;background:rgba(0,0,0,0.3);border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:11px;font-weight:600;outline:none;">
+          <option value="">-- Seleccionar materia --</option>
+          <optgroup label="COSMOS Y PENSAMIENTO">
+            <option value="Espiritualidad y Religiones" ${COURSE_INFO[code].area==='Espiritualidad y Religiones'?'selected':''}>Espiritualidad y Religiones</option>
+            <option value="Filosofía" ${COURSE_INFO[code].area==='Filosofía'?'selected':''}>Filosofía</option>
+            <option value="Psicología" ${COURSE_INFO[code].area==='Psicología'?'selected':''}>Psicología</option>
+          </optgroup>
+          <optgroup label="COMUNIDAD Y SOCIEDAD">
+            <option value="Comunicación y Lenguajes" ${COURSE_INFO[code].area==='Comunicación y Lenguajes'?'selected':''}>Comunicación y Lenguajes</option>
+            <option value="Lengua Originaria" ${COURSE_INFO[code].area==='Lengua Originaria'?'selected':''}>Lengua Originaria</option>
+            <option value="Lengua Extranjera" ${COURSE_INFO[code].area==='Lengua Extranjera'?'selected':''}>Lengua Extranjera</option>
+            <option value="Ciencias Sociales" ${COURSE_INFO[code].area==='Ciencias Sociales'?'selected':''}>Ciencias Sociales</option>
+            <option value="Educación Física y Deportes" ${COURSE_INFO[code].area==='Educación Física y Deportes'?'selected':''}>Educación Física y Deportes</option>
+            <option value="Educación Musical" ${COURSE_INFO[code].area==='Educación Musical'?'selected':''}>Educación Musical</option>
+            <option value="Artes Plásticas y Visuales" ${COURSE_INFO[code].area==='Artes Plásticas y Visuales'?'selected':''}>Artes Plásticas y Visuales</option>
+          </optgroup>
+          <optgroup label="VIDA TIERRA TERRITORIO">
+            <option value="Ciencias Naturales" ${COURSE_INFO[code].area==='Ciencias Naturales'?'selected':''}>Ciencias Naturales</option>
+            <option value="Biología y Geografía" ${COURSE_INFO[code].area==='Biología y Geografía'?'selected':''}>Biología y Geografía</option>
+            <option value="Física" ${COURSE_INFO[code].area==='Física'?'selected':''}>Física</option>
+            <option value="Química" ${COURSE_INFO[code].area==='Química'?'selected':''}>Química</option>
+          </optgroup>
+          <optgroup label="CIENCIA TECNOLOGÍA Y PRODUCCIÓN">
+            <option value="Matemática" ${COURSE_INFO[code].area==='Matemática'?'selected':''}>Matemática</option>
+            <option value="Técnica Tecnológica" ${COURSE_INFO[code].area==='Técnica Tecnológica'?'selected':''}>Técnica Tecnológica</option>
+          </optgroup>
+        </select>
+        <div id="dc-campo-${code}" style="font-size:10px;color:var(--accent);font-weight:700;margin-top:4px;padding-left:2px;">
+          ${COURSE_INFO[code].campo ? '🔷 ' + COURSE_INFO[code].campo : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  openView('vDocente');
+}
+
+function toggleCursoDoc(code){
+  const el  = document.getElementById('dc-'+code);
+  const inp = document.getElementById('dc-inp-'+code);
+  const idx = DOCENTE.cursos.indexOf(code);
+  if(idx > -1){
+    DOCENTE.cursos.splice(idx, 1);
+    el.style.background   = 'rgba(255,255,255,0.05)';
+    el.style.borderColor  = 'var(--border)';
+    el.querySelector('div').style.color = 'var(--muted)';
+    el.querySelector('div div:last-child').textContent = '➕';
+    inp.style.display = 'none';
+  } else {
+    DOCENTE.cursos.push(code);
+    el.style.background  = 'rgba(0,229,160,0.12)';
+    el.style.borderColor = 'var(--accent)';
+    el.querySelector('div').style.color = 'var(--accent)';
+    el.querySelector('div div:last-child').textContent = '✅';
+    inp.style.display = 'block';
+  }
+}
+
+function saveDocente(){
+  DOCENTE.nombre = document.getElementById('dcNombre').value.trim();
+
+  // Apply docente name to all COURSE_INFO (campo/area stays per-course)
+  Object.keys(COURSE_INFO).forEach(c => {
+    COURSE_INFO[c].docente = DOCENTE.nombre;
+  });
+
+  // Show teacher name in header
+  const hdrEl = document.getElementById('docenteNombreHdr');
+  if(DOCENTE.nombre){
+    hdrEl.textContent = '👤 ' + DOCENTE.nombre;
+    hdrEl.style.display = 'block';
+  } else {
+    hdrEl.style.display = 'none';
+  }
+
+  // Hide/show course cards and update materia display
+  document.querySelectorAll('.ccard').forEach(card => {
+    const onclick = card.getAttribute('onclick') || '';
+    const m = onclick.match(/'(\w+)'/);
+    if(!m) return;
+    const code = m[1];
+    const shown = DOCENTE.cursos.length === 0 || DOCENTE.cursos.includes(code);
+    card.style.display = shown ? '' : 'none';
+    // Update materia and campo labels on card
+    const matEl   = document.getElementById('mat-'+code);
+    const campoEl = document.getElementById('campo-'+code);
+    const mat   = COURSE_INFO[code].area  || '';
+    const campo = COURSE_INFO[code].campo || '';
+    if(matEl){
+      matEl.textContent  = mat   || '';
+    }
+    if(campoEl){
+      campoEl.textContent = campo ? '🔷 ' + campo : '';
+    }
+  });
+
+  closeView('vDocente');
+  if(window.fbSaveDocente) window.fbSaveDocente();
+  if(window.fbSaveCourseInfo) window.fbSaveCourseInfo();
+  toast('✅ Perfil guardado correctamente');
+}
+
+
+const FIL_DATA = {"1A":[{"name":"AGUILERA MALDONADO JORGE MIGUEL","g":"M","ci":"14769504","rude":"407303682018033","fnac":"30/11/2013"},{"name":"APAZA MAMANI BRIAN EZEQUIEL","g":"M","ci":"","rude":"","fnac":""},{"name":"CALLE MAMANI OMAR MARTIN","g":"M","ci":"13297617","rude":"807304422017013","fnac":"30/04/2013"},{"name":"CHALLCO MOLLINEDO ABEL MATIAS","g":"M","ci":"16036399","rude":"807301212018006","fnac":"19/11/2013"},{"name":"GUTIERREZ HINOJOSA SANTIAGO ROMAN","g":"M","ci":"15325359","rude":"807301262018060","fnac":"28/07/2013"},{"name":"GUTIERREZ SEJAS RANDY","g":"M","ci":"16173814","rude":"807301232018031","fnac":"21/05/2014"},{"name":"HUARICALLO CHOQUEHUANCA YERSON OSCAR","g":"M","ci":"15707958","rude":"807301572018012","fnac":"05/04/2014"},{"name":"LOPEZ MAYTA GABRIEL JAVIER","g":"M","ci":"15607831","rude":"807301232018012","fnac":"12/04/2014"},{"name":"PATTY BARRA MATIAS LEONEL","g":"M","ci":"14701346","rude":"807301232018006","fnac":"22/01/2014"},{"name":"UBERHUAGA NEGRON GABRIEL SEBASTIAN","g":"M","ci":"14045104","rude":"807300232018019","fnac":"11/12/2013"},{"name":"VARGAS FERNANDEZ LEONARDO DANIEL","g":"M","ci":"15099627","rude":"807301232018023","fnac":"05/01/2014"}],"2A":[{"name":"FLORES ILLANES CRISTOFER ADALID","g":"M","ci":"14039805","rude":"807301252016058","fnac":"07/09/2011"},{"name":"LAURA CASTRO NEGUI IVANA","g":"F","ci":"12862423","rude":"807301892016010","fnac":"10/02/2012"},{"name":"LIMACHI APAZA IVET","g":"F","ci":"15874927","rude":"7057000320181318","fnac":"16/06/2013"},{"name":"LIRA POMA FAVIAN ROTMY","g":"M","ci":"16995986","rude":"807300042017024","fnac":"13/10/2012"},{"name":"LOPEZ CAPCHA MARVIN SEBASTIAN","g":"M","ci":"11078442","rude":"4073056620175033","fnac":"23/07/2007"},{"name":"MORALES DIAZ ROMINA","g":"F","ci":"13632886","rude":"819810502017005","fnac":"02/03/2013"},{"name":"RAMOS KUNO JHOEL AMILCAR","g":"M","ci":"14912131","rude":"407302732018001","fnac":"16/12/2012"},{"name":"TORREZ LAURA DAVID ALVARO","g":"M","ci":"16427077","rude":"807301232017020","fnac":"04/01/2013"},{"name":"VILLA ORTIZ LEANDRO ALEXIS","g":"M","ci":"13848295","rude":"807301252018002","fnac":"18/04/2013"}],"2B":[{"name":"ALCON CHOQUE MARIANA SOLEDAD","g":"F","ci":"13737313","rude":"807301722017152","fnac":"12/06/2013"},{"name":"ARANDA CORDOVA EMILY MAYLEN","g":"F","ci":"15301051","rude":"807301232017002","fnac":"21/10/2012"},{"name":"GUTIERREZ SEJAS ADHEMAR","g":"M","ci":"16173778","rude":"807306922017008","fnac":"23/09/2012"},{"name":"MAMANI BAPTISTA ROMEL JESUS","g":"M","ci":"14918669","rude":"407300822017057","fnac":"25/10/2012"},{"name":"MANCILLA PILCOMAYO ALEJANDRO JHAMIL","g":"M","ci":"15483090","rude":"807301232016027","fnac":"30/01/2012"},{"name":"MENDOZA MACHICADO DAVID FERNANDO","g":"M","ci":"16225063","rude":"807301232017024","fnac":"19/11/2012"},{"name":"RIVERO MACIAS JAZMIN ROSA","g":"F","ci":"15273591","rude":"407302312019024","fnac":"15/05/2013"}],"3A":[{"name":"CHIPUNAVI SULLCA JHOSTIN ALBERTO","g":"M","ci":"13246537","rude":"807301012016014","fnac":"18/02/2012"},{"name":"CORBAN MAMANI MATEO","g":"M","ci":"14226776","rude":"807301232016008","fnac":"06/03/2012"},{"name":"CRUZ HUACANI SARA RUHAMA","g":"F","ci":"13969607","rude":"807301252017099","fnac":"17/01/2012"},{"name":"HUARACHI HINOJOSA ARIANA","g":"F","ci":"15310720","rude":"807302872016042","fnac":"22/01/2012"},{"name":"MACUCHAPI APAZA NASIEL FERNANDO","g":"M","ci":"17046028","rude":"807301082016045","fnac":"11/03/2012"},{"name":"RAMIREZ AGUILAR GABRIEL JUAN JORGE","g":"M","ci":"15484387","rude":"807301252016105","fnac":"09/03/2012"},{"name":"SINKA CHOQUEHUANCA KEVIN JHERSON","g":"M","ci":"15953413","rude":"8073015720143851","fnac":"20/05/2010"},{"name":"URQUIOLA MACHICADO DANIA SUSAN","g":"F","ci":"14944452","rude":"407300442017038","fnac":"23/02/2012"}],"3B":[{"name":"ACARAPI MAMANI ABIGAIL HEICEL","g":"F","ci":"16227351","rude":"807301262016068","fnac":"08/10/2011"},{"name":"ARCE APAZA LUIS ARMANDO","g":"M","ci":"16563710","rude":"807306362016007","fnac":"04/11/2011"},{"name":"FARIÑAS VIDAL CEILY MARIA","g":"F","ci":"15073907","rude":"522100302017028","fnac":"04/09/2011"},{"name":"GONZALES ROJAS ANGEL MAURICIO","g":"M","ci":"15316205","rude":"8073011720152815","fnac":"07/03/2011"},{"name":"MAMANI CHOQUE DAVID NESTOR","g":"M","ci":"15496628","rude":"407300862015335","fnac":"07/05/2011"},{"name":"PALOMINO MARQUEZ EZDENKA ALEXANDRA","g":"F","ci":"14911306","rude":"4073047120153159","fnac":"16/10/2010"},{"name":"SERRANO MAMANI MELISA ALEJANDRA","g":"F","ci":"14484834","rude":"807305632016006","fnac":"20/05/2012"},{"name":"UBERHUAGA NEGRON NATALIA BRYANNA","g":"F","ci":"14046672","rude":"807300092016139","fnac":"02/06/2012"}],"4A":[{"name":"ACEVEDO SEGALES FABIAN FERNANDO GERARDO","g":"M","ci":"11104364","rude":"80730547201211625","fnac":"09/04/2008"},{"name":"APAZA MAMANI YAMILA","g":"F","ci":"","rude":"","fnac":""},{"name":"ENCINAS LOPEZ ANAHI AYELEN","g":"F","ci":"12672137","rude":"805700012015706","fnac":"13/10/2010"},{"name":"LOPEZ MAMANI SILVANA","g":"F","ci":"14043193","rude":"807301232014469","fnac":"19/05/2010"},{"name":"TINCUTA QUISPE ANA GABRIELA","g":"F","ci":"14796103","rude":"40730443201687157","fnac":"01/03/2011"},{"name":"TOLEDO CHIPANA BENJAMIN BEKEN","g":"M","ci":"15139952","rude":"807301232015334A","fnac":"03/05/2011"},{"name":"TORREZ QUISBERT ANDY ROMAN","g":"M","ci":"17371212","rude":"807301122015709","fnac":"14/08/2010"},{"name":"VALDEZ CHAVEZ LEONEL MATEO","g":"M","ci":"15716594","rude":"80730781201473","fnac":"07/01/2011"},{"name":"ZAMBRANA SOSSA ALEYDA LUCIANA","g":"F","ci":"10955259","rude":"8073012320153115","fnac":"02/05/2011"}],"4B":[{"name":"ARANDA CORDOVA YAMILE ESPERANZA","g":"F","ci":"15301114","rude":"8073012320153263","fnac":"14/09/2010"},{"name":"BUSTILLOS CABA LEONARDO NAHUEL","g":"M","ci":"","rude":"","fnac":""},{"name":"DURAN DAVALOS ROBERTO AMIRKAN","g":"M","ci":"14414408","rude":"807301252014183","fnac":"25/06/2010"},{"name":"LAURA CASTRO AYDELIN BRISEYKA","g":"F","ci":"12862328","rude":"80730410201465","fnac":"29/04/2010"},{"name":"MENDOZA MACHICADO HENRRY CARLOS","g":"M","ci":"16225036","rude":"807301232016020","fnac":"20/12/2010"},{"name":"MENDOZA MACHICADO YANINA CARLA","g":"F","ci":"16225034","rude":"807301232016021","fnac":"20/12/2010"},{"name":"QUISPE CONDORI ANTHONY JOSUE","g":"M","ci":"15339333","rude":"8073011220141509","fnac":"04/02/2010"},{"name":"TORREZ LAURA ELOY ALEJANDRO","g":"M","ci":"15310971","rude":"8073012320153100","fnac":"17/10/2010"},{"name":"TORRICO TICONA VALENTINA NATALIA","g":"F","ci":"12739669","rude":"807306362015624","fnac":"03/09/2010"},{"name":"YUPANQUI CAHUAPAZA MARBEL DANIL","g":"M","ci":"14415866","rude":"80630029201568","fnac":"28/08/2010"}],"5A":[{"name":"CARDOZO MAYTA LIZELLE ANGELA","g":"F","ci":"13762209","rude":"807304812014597","fnac":"18/12/2009"},{"name":"CHALCO WALSER MATEO NICOLAS","g":"M","ci":"16219550","rude":"8073055120142720","fnac":"26/05/2010"},{"name":"CONDARCO CASAS CAMILA ALEJANDRA","g":"F","ci":"14481942","rude":"8073015120157693","fnac":"20/11/2009"},{"name":"HUANCA SIRPA MATIAS NAZARENO","g":"M","ci":"13116941","rude":"807301252014638","fnac":"17/05/2010"},{"name":"ILLANES BRAVO DENNIS ZHAYLON","g":"M","ci":"17139830","rude":"8073012320152984","fnac":"07/05/2010"},{"name":"ILLANES ILLANES ROCIO","g":"F","ci":"14482864","rude":"8073015120157765","fnac":"15/06/2009"},{"name":"MAMANI NINA YEREMY BAYRON","g":"M","ci":"13969354","rude":"8073021020158066","fnac":"14/02/2010"},{"name":"MENDOZA FLORES DEYBIS FRANCO","g":"M","ci":"12830293","rude":"807301262013775","fnac":"20/04/2009"},{"name":"PACHECO MUJICA JHONATAN RAUL","g":"M","ci":"14913890","rude":"807301232014495","fnac":"19/03/2010"},{"name":"PATTY BARRA VICTORIA","g":"F","ci":"12672913","rude":"8073012320173580","fnac":"23/09/2010"},{"name":"QUISPE CHUQUIMIA LUZ NATALIA","g":"F","ci":"13643150","rude":"807301232014523","fnac":"22/12/2009"},{"name":"SAINZ UTRILLA AUDREY SAMANTHA","g":"F","ci":"13970441","rude":"8073012320153464","fnac":"02/09/2009"}],"5B":[{"name":"ACARAPI MAMANI ANGELI MELODY","g":"F","ci":"16227370","rude":"807301262014202","fnac":"25/10/2009"},{"name":"CHOQUE MAYTA BRENDA VANESA","g":"F","ci":"13966426","rude":"8073011220141676","fnac":"09/10/2009"},{"name":"GOMEZ RODRIGUEZ ESTEBAN JORGE MANUEL","g":"M","ci":"14796357","rude":"80730201201427366","fnac":"22/12/2009"},{"name":"MACOÑO VEGA CARLOS DANIEL","g":"M","ci":"15900030","rude":"807301232014133","fnac":"12/01/2009"},{"name":"MONTECINOS PACHECO LUZ ANAHI","g":"F","ci":"14413138","rude":"807301252014755","fnac":"07/01/2010"},{"name":"MONTECINOS PACHECO VESMER JAIR","g":"M","ci":"14293193","rude":"807301252014804","fnac":"07/01/2010"},{"name":"RAMOS KUNO JUAN JOSE","g":"M","ci":"11078370","rude":"8073010320131056","fnac":"14/11/2007"},{"name":"ROCHA VEGA JAIRO DEMIAN","g":"M","ci":"13375536","rude":"8073014620135409","fnac":"12/10/2007"},{"name":"SEA RIVERA BRENDA RAQUEL","g":"F","ci":"17023717","rude":"807301272016002","fnac":"16/05/2010"},{"name":"VALDEZ MAMANI JOSE MANUEL","g":"M","ci":"13245502","rude":"8073025720145169","fnac":"23/12/2009"}],"6A":[{"name":"GUTIERREZ QUIÑONES DIANA CIELO","g":"F","ci":"15057127","rude":"80730556201271A","fnac":"02/05/2008"},{"name":"LAYME DIAZ RICKY DIEGO","g":"M","ci":"14290471","rude":"8073026520144755","fnac":"21/09/2008"},{"name":"MAMANI BERNABE MATEO ABDIEL","g":"M","ci":"14764390","rude":"807301212013864","fnac":"06/09/2008"},{"name":"MONTAÑO CONDE DENISSE ADRIANA","g":"F","ci":"9890341","rude":"807301232013335A","fnac":"06/08/2008"},{"name":"QUISPE CONDORI EILEEN MAGALI","g":"F","ci":"15339390","rude":"8073011220131683","fnac":"11/07/2008"},{"name":"SARAVIA ALANOCA WILLIAMS ABDEL","g":"M","ci":"15097332","rude":"8073011720123320A","fnac":"05/12/2007"},{"name":"SORUCO DANZ MICAELA","g":"F","ci":"13760687","rude":"807301712013150","fnac":"08/01/2009"},{"name":"TRIBEÑO PEREZ JESHUA LION","g":"M","ci":"15223583","rude":"807301232014320","fnac":"22/01/2009"}],"6B":[{"name":"ALVAREZ GUTIERREZ ANTHONY GEOVANNI","g":"M","ci":"15297467","rude":"80730123201330","fnac":"15/06/2009"},{"name":"ARIAS HUANCA BIANKA MICHEL","g":"F","ci":"12925545","rude":"807301232013227","fnac":"19/07/2008"},{"name":"CABANA BALBOA ANJHELY KIRAN","g":"F","ci":"16856620","rude":"8073012620141478","fnac":"06/02/2009"},{"name":"CARVAJAL COYO ALEJANDRO","g":"M","ci":"14797219","rude":"8073020720146336","fnac":"17/02/2009"},{"name":"CHOQUE BLANCO YERKO ITAN","g":"M","ci":"14229556","rude":"8073012320133550","fnac":"03/06/2009"},{"name":"CONDARCO TORREZ EMILCE MAGALY","g":"F","ci":"12926271","rude":"8073010820131574","fnac":"15/04/2009"},{"name":"MACHACA JIMENEZ ESTEBAN BRYAN","g":"M","ci":"10929230","rude":"807304972014629A","fnac":"18/10/2007"},{"name":"NINA PAREDES DORIAN FABRICIO","g":"M","ci":"","rude":"","fnac":""},{"name":"POMA ARHUATA MARISOL","g":"F","ci":"13023968","rude":"807301232013253","fnac":"08/09/2008"},{"name":"UBERHUAGA NEGRON MATEO THIAGO","g":"M","ci":"9202914","rude":"807300082013824","fnac":"23/08/2008"}]};
+
+// editable filiation data: filExtra[course][idx] = {tutor, parentesco, telefono, direccion}
+const filExtra = {};
+Object.keys(STUDENTS).forEach(c => {
+  filExtra[c] = {};
+  STUDENTS[c].forEach((_,i) => {
+    filExtra[c][i] = {tutor:'', parentesco:'', telefono:'', direccion:'', ci:'', rude:'', fnac:''};
+  });
+});
+
+// ─── FILIACIÓN FUNCTIONS ───────────────────────────────────────
+function openFiliacion(){
+  document.getElementById('filTitle').textContent = 'Filiación · ' + CC;
+  document.getElementById('filSub').textContent = GRADE_LABELS[CC] + ' · ' + STUDENTS[CC].length + ' estudiantes';
+  document.getElementById('filHdr').style.background = COLORS[CC];
+  renderFiliacion();
+  openView('vFiliacion');
+}
+
+function renderFiliacion(){
+  const students = STUDENTS[CC];
+  const filData = FIL_DATA[CC];
+  let html = '';
+
+  students.forEach((s, idx) => {
+    const fd = filData[idx] || {};
+    const ex = filExtra[CC][idx];
+    const isManual = s.manual === true;
+    const genderLabel = s.g === 'M' ? 'Masculino' : 'Femenino';
+    const ci = fd.ci || ex.ci || '';
+    const rude = fd.rude || ex.rude || '';
+    const fnac = fd.fnac || ex.fnac || '';
+
+    const roField = (label, val) => `
+      <div class="fil-field">
+        <label>${label}</label>
+        <div class="fil-readonly"><span class="lock">🔒</span>${val||'—'}</div>
+      </div>`;
+
+    const editField = (label, key, val, type='text', placeholder='') => `
+      <div class="fil-field">
+        <label>${label}</label>
+        <input class="fil-editable ${val?'has':''}" type="${type}"
+          placeholder="${placeholder||'Escribe...'}"
+          value="${val}"
+          oninput="filExtra['${CC}'][${idx}].${key}=this.value;this.className='fil-editable'+(this.value?' has':'')">
+      </div>`;
+
+    html += `<div class="fil-card">
+      <div class="fil-card-header" onclick="toggleFil(${idx})">
+        <span class="fil-num">${idx+1}</span>
+        <span class="fil-name">${s.name}${isManual?' <span style="font-size:9px;color:var(--accent2);font-weight:800;">NUEVO</span>':''}</span>
+        <span class="fil-arrow" id="fil-arr-${idx}">›</span>
+      </div>
+      <div class="fil-body" id="fil-body-${idx}">
+        <div style="padding:0 14px;">
+
+          <div class="fil-grid">
+            ${roField('Género', genderLabel)}
+            ${isManual
+              ? editField('Fecha Nac.', 'fnac', ex.fnac||'', 'text', 'DD/MM/AAAA')
+              : roField('Fecha Nac.', fnac)}
+          </div>
+
+          ${isManual
+            ? editField('N° C.I.', 'ci', ex.ci||'', 'text', 'Número de CI')
+            : roField('N° C.I.', ci)}
+
+          ${isManual
+            ? editField('N° RUDE', 'rude', ex.rude||'', 'text', 'Número RUDE')
+            : roField('N° RUDE', rude)}
+
+          ${editField('PP.FF. / Tutor', 'tutor', ex.tutor, 'text', 'Nombre del tutor...')}
+
+          <div class="fil-grid">
+            ${editField('Parentesco', 'parentesco', ex.parentesco, 'text', 'Ej: Madre')}
+            ${editField('Teléfono', 'telefono', ex.telefono, 'tel', 'Nro. de contacto')}
+          </div>
+
+          ${editField('Dirección', 'direccion', ex.direccion, 'text', 'Dirección del estudiante...')}
+
+        </div>
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('filBody').innerHTML = html;
+}
+
+function toggleFil(idx){
+  const body = document.getElementById('fil-body-'+idx);
+  const arr  = document.getElementById('fil-arr-'+idx);
+  const open = body.classList.contains('open');
+  body.classList.toggle('open', !open);
+  arr.classList.toggle('open', !open);
+}
+
+function saveFiliacion(){
+  let filled = 0;
+  const n = STUDENTS[CC].length;
+  for(let i=0;i<n;i++){
+    const ex = filExtra[CC][i];
+    if(ex.tutor||ex.telefono||ex.direccion) filled++;
+  }
+  if(window.fbSaveFilExtra) window.fbSaveFilExtra();
+  toast(`✅ Filiación guardada · ${filled}/${n} con datos completos`);
+}
+
+
+const RUDE = {
+  "1A":[
+    {rude:"807301212018006",sex:"M"},{rude:"807301232018031",sex:"M"},
+    {rude:"807301232018012",sex:"M"},{rude:"807301232018006",sex:"M"},
+    {rude:"807300232018019",sex:"M"},{rude:"407303682018033",sex:"M"},
+    {rude:"",sex:"M"},{rude:"807304422017013",sex:"M"},
+    {rude:"807301262018060",sex:"M"},{rude:"807301572018012",sex:"M"},
+    {rude:"807301232018023",sex:"M"}
+  ],
+  "2A":[
+    {rude:"807301252016058",sex:"M"},{rude:"807301892016010",sex:"F"},
+    {rude:"7057000320181318",sex:"F"},{rude:"807300042017024",sex:"M"},
+    {rude:"4073056620175033",sex:"M"},{rude:"819810502017005",sex:"F"},
+    {rude:"407302732018001",sex:"M"},{rude:"807301232017020",sex:"M"},
+    {rude:"807301252018002",sex:"M"}
+  ],
+  "2B":[
+    {rude:"807301722017152",sex:"F"},{rude:"807301232017002",sex:"F"},
+    {rude:"807306922017008",sex:"M"},{rude:"407300822017057",sex:"M"},
+    {rude:"807301232016027",sex:"M"},{rude:"807301232017024",sex:"M"},
+    {rude:"407302312019024",sex:"F"}
+  ],
+  "3A":[
+    {rude:"807301012016014",sex:"M"},{rude:"807301232016008",sex:"M"},
+    {rude:"807301252017099",sex:"F"},{rude:"807302872016042",sex:"F"},
+    {rude:"807301082016045",sex:"M"},{rude:"8073015720143851",sex:"M"},
+    {rude:"407300442017038",sex:"F"}
+  ],
+  "3B":[
+    {rude:"807301262016068",sex:"F"},{rude:"807306362016007",sex:"M"},
+    {rude:"522100302017028",sex:"F"},{rude:"8073011720152815",sex:"M"},
+    {rude:"407300862015335",sex:"M"},{rude:"4073047120153159",sex:"F"},
+    {rude:"807305632016006",sex:"F"},{rude:"807300092016139",sex:"F"}
+  ],
+  "4A":[
+    {rude:"80730547201211625",sex:"M"},{rude:"",sex:"F"},
+    {rude:"805700012015706",sex:"F"},{rude:"807301232014469",sex:"F"},
+    {rude:"40730443201687157",sex:"F"},{rude:"807301232015334A",sex:"M"},
+    {rude:"807301122015709",sex:"M"},{rude:"80730781201473",sex:"M"},
+    {rude:"8073012320153115",sex:"F"}
+  ],
+  "4B":[
+    {rude:"8073012320153263",sex:"F"},{rude:"",sex:"M"},
+    {rude:"807301252014183",sex:"M"},{rude:"80730410201465",sex:"F"},
+    {rude:"807301232016020",sex:"M"},{rude:"807301232016021",sex:"F"},
+    {rude:"8073011220141509",sex:"M"},{rude:"8073012320153100",sex:"M"},
+    {rude:"807306362015624",sex:"F"},{rude:"80630029201568",sex:"M"}
+  ],
+  "5A":[
+    {rude:"807304812014597",sex:"F"},{rude:"8073055120142720",sex:"M"},
+    {rude:"8073015120157693",sex:"F"},{rude:"807301252014638",sex:"M"},
+    {rude:"8073012320152984",sex:"M"},{rude:"8073015120157765",sex:"F"},
+    {rude:"8073021020158066",sex:"M"},{rude:"807301262013775",sex:"M"},
+    {rude:"807301232014495",sex:"M"},{rude:"8073012320173580",sex:"F"},
+    {rude:"807301232014523",sex:"F"},{rude:"8073012320153464",sex:"F"}
+  ],
+  "5B":[
+    {rude:"807301262014202",sex:"F"},{rude:"8073011220141676",sex:"F"},
+    {rude:"80730201201427366",sex:"M"},{rude:"807301232014133",sex:"M"},
+    {rude:"807301252014755",sex:"F"},{rude:"807301252014804",sex:"M"},
+    {rude:"8073010320131056",sex:"M"},{rude:"8073014620135409",sex:"M"},
+    {rude:"807301272016002",sex:"F"},{rude:"8073025720145169",sex:"M"}
+  ],
+  "6A":[
+    {rude:"80730556201271A",sex:"F"},{rude:"8073026520144755",sex:"M"},
+    {rude:"807301212013864",sex:"M"},{rude:"807301232013335A",sex:"F"},
+    {rude:"8073011220131683",sex:"F"},{rude:"8073011720123320A",sex:"M"},
+    {rude:"807301712013150",sex:"F"},{rude:"807301232014320",sex:"M"}
+  ],
+  "6B":[
+    {rude:"80730123201330",sex:"M"},{rude:"807301232013227",sex:"F"},
+    {rude:"8073012620141478",sex:"F"},{rude:"8073020720146336",sex:"M"},
+    {rude:"8073012320133550",sex:"M"},{rude:"8073010820131574",sex:"F"},
+    {rude:"807304972014629A",sex:"M"},{rude:"807301232013253",sex:"F"},
+    {rude:"807300082013824",sex:"M"}
+  ]
+};
+
+// ─── BOLETÍN ───────────────────────────────────────────────────
+function openBoletin(){
+  document.getElementById('bolTitle').textContent = 'Boletín · ' + CC;
+  document.getElementById('bolSub').textContent = GRADE_LABELS[CC] + ' Secundaria · Gestión 2026';
+  document.getElementById('bolHdr').style.background = COLORS[CC];
+  renderBoletin();
+  openView('vBoletin');
+}
+
+function renderBoletin(){
+  const students = STUDENTS[CC];
+  const rudeData = RUDE[CC];
+  let mF=0, mM=0;
+  let aprobF=0, aprobM=0, reprobF=0, reprobM=0;
+  let sumT1=0,sumT2=0,sumT3=0,sumAnual=0;
+  let cT1=0,cT2=0,cT3=0,cAnual=0;
+
+  let rows = '';
+  students.forEach((s, idx) => {
+    const rd = rudeData[idx] || {rude:'', sex: s.g};
+    const sex = rd.sex || s.g;
+    const t1 = calcTotal(scores[CC][1][idx]);
+    const t2 = calcTotal(scores[CC][2][idx]);
+    const t3 = calcTotal(scores[CC][3][idx]);
+    const v1 = t1==='—'?null:parseFloat(t1);
+    const v2 = t2==='—'?null:parseFloat(t2);
+    const v3 = t3==='—'?null:parseFloat(t3);
+    const vals = [v1,v2,v3].filter(v=>v!==null);
+    const anual = vals.length ? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length) : null;
+    const estado = anual===null?'—':anual>=51?'APROBADO':'REPROBADO';
+    const ec = estado==='APROBADO'?'bol-aprobado':estado==='REPROBADO'?'bol-reprobado':'';
+
+    if(sex==='F') mF++; else mM++;
+    if(v1!==null){sumT1+=v1;cT1++;}
+    if(v2!==null){sumT2+=v2;cT2++;}
+    if(v3!==null){sumT3+=v3;cT3++;}
+    if(anual!==null){sumAnual+=anual;cAnual++;}
+    if(estado==='APROBADO'){if(sex==='F')aprobF++;else aprobM++;}
+    if(estado==='REPROBADO'){if(sex==='F')reprobF++;else reprobM++;}
+
+    rows += `<tr>
+      <td>${idx+1}</td>
+      <td class="name-col">${s.name}</td>
+      <td style="font-size:8px;">${rd.rude||'—'}</td>
+      <td>${sex}</td>
+      <td>${t1}</td><td>${t2}</td><td>${t3}</td>
+      <td><b>${anual??'—'}</b></td>
+      <td class="${ec}">${estado}</td>
+    </tr>`;
+  });
+
+  const total = mF+mM;
+  const pT1 = cT1?Math.round(sumT1/cT1*10)/10:'—';
+  const pT2 = cT2?Math.round(sumT2/cT2*10)/10:'—';
+  const pT3 = cT3?Math.round(sumT3/cT3*10)/10:'—';
+  const pA  = cAnual?Math.round(sumAnual/cAnual*10)/10:'—';
+
+  document.getElementById('bolBody').innerHTML = `
+  <div class="bol-wrap" id="bolContent">
+    <div class="bol-header">
+      <h3>🏫 Unidad Educativa Técnico Humanístico "San Javier"</h3>
+      <p>Dpto: La Paz · Distrito: La Paz 1 · Turno: Tarde · Pública Fiscal</p>
+      <h3 style="margin-top:6px;font-size:14px;">BOLETÍN DE NOTAS · GESTIÓN 2026</h3>
+    </div>
+    <div class="bol-meta">
+      <div>Curso: <span>${GRADE_LABELS[CC]} SECUNDARIA</span></div>
+      <div>Docente: <span>${COURSE_INFO[CC].docente||'—'}</span></div>
+      <div>Campo: <span>${COURSE_INFO[CC].campo}</span></div>
+      <div>Área: <span>${COURSE_INFO[CC].area}</span></div>
+    </div>
+    <table class="bol-table">
+      <thead><tr>
+        <th>N°</th><th>APELLIDOS Y NOMBRES</th><th>RUDE</th>
+        <th>SEX</th><th>1er TRIM.</th><th>2do TRIM.</th><th>3er TRIM.</th>
+        <th>PROM. ANUAL</th><th>ESTADO</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="bol-stats">
+      <div class="bol-stats-title">Estadísticas del Curso</div>
+      <table class="bol-stats-table">
+        <thead><tr><th>INDICADOR</th><th>1er TRIM.</th><th>2do TRIM.</th><th>3er TRIM.</th><th>ANUAL</th></tr></thead>
+        <tbody>
+          <tr><td>Inscritos (F)</td><td>${mF}</td><td>${mF}</td><td>${mF}</td><td>${mF}</td></tr>
+          <tr><td>Inscritos (M)</td><td>${mM}</td><td>${mM}</td><td>${mM}</td><td>${mM}</td></tr>
+          <tr><td><b>Total Inscritos</b></td><td><b>${total}</b></td><td><b>${total}</b></td><td><b>${total}</b></td><td><b>${total}</b></td></tr>
+          <tr><td>Promovidos (F)</td><td>—</td><td>—</td><td>—</td><td>${aprobF}</td></tr>
+          <tr><td>Promovidos (M)</td><td>—</td><td>—</td><td>—</td><td>${aprobM}</td></tr>
+          <tr><td><b>Total Promovidos</b></td><td>—</td><td>—</td><td>—</td><td><b>${aprobF+aprobM}</b></td></tr>
+          <tr><td>Reprobados (F)</td><td>—</td><td>—</td><td>—</td><td>${reprobF}</td></tr>
+          <tr><td>Reprobados (M)</td><td>—</td><td>—</td><td>—</td><td>${reprobM}</td></tr>
+          <tr><td><b>Total Reprobados</b></td><td>—</td><td>—</td><td>—</td><td><b>${reprobF+reprobM}</b></td></tr>
+          <tr><td><b>Promedio Curso</b></td><td><b>${pT1}</b></td><td><b>${pT2}</b></td><td><b>${pT3}</b></td><td><b>${pA}</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bol-firma">
+      <div class="bol-firma-item">
+        <div class="bol-firma-line"></div>
+        <div>PROFESOR/A · CIENCIAS SOCIALES</div>
+      </div>
+      <div class="bol-firma-item">
+        <div class="bol-firma-line"></div>
+        <div>Msc. J. FERNANDO SANDOVAL RODRIGUEZ</div>
+        <div>DIRECTOR U.E.T.H. "SAN JAVIER"</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function printBoletin(){
+  const content = document.getElementById('bolContent');
+  if(!content){ toast('❌ No hay datos', true); return; }
+  const pa = document.getElementById('printArea');
+  pa.innerHTML = content.outerHTML;
+  pa.style.display = 'block';
+  window.print();
+  pa.style.display = 'none';
+  pa.innerHTML = '';
+}
+
+function pdfBoletin(){
+  const content = document.getElementById('bolContent');
+  if(!content){ toast('❌ No hay datos', true); return; }
+  // Use same print mechanism — on mobile "Save as PDF" appears in print dialog
+  const pa = document.getElementById('printArea');
+  pa.innerHTML = `<div style="font-family:Arial,sans-serif;padding:20px;color:#111;">
+    ${content.outerHTML}
+  </div>`;
+  pa.style.display = 'block';
+  window.print();
+  pa.style.display = 'none';
+  pa.innerHTML = '';
+  toast('💡 En el diálogo de impresión elegí "Guardar como PDF"');
+}
+
+function toast(msg, err=false){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(err?' err':'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ─── FIREBASE ──────────────────────────────────────────────────
+</script>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBi05CdlDfXwGl9Mwxj0OGiQoZ9VtRpZ1w",
+  authDomain: "winniregistro.firebaseapp.com",
+  projectId: "winniregistro",
+  storageBucket: "winniregistro.firebasestorage.app",
+  messagingSenderId: "942260201850",
+  appId: "1:942260201850:web:40a953e7ec95a12352cec3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ── Guardar datos en Firestore ──
+async function fbSave(collection, id, data){
+  try {
+    await setDoc(doc(db, collection, id), data);
+  } catch(e){
+    console.warn('Firebase save error:', e);
+  }
+}
+
+// ── Cargar todos los datos al iniciar ──
+async function fbLoad(){
+  try {
+    // Docente
+    const docenteSnap = await getDoc(doc(db, 'config', 'docente'));
+    if(docenteSnap.exists()){
+      const d = docenteSnap.data();
+      Object.assign(window.DOCENTE, d);
+      // Apply to UI
+      if(d.nombre){
+        const hdrEl = document.getElementById('docenteNombreHdr');
+        if(hdrEl){ hdrEl.textContent = '👤 ' + d.nombre; hdrEl.style.display = 'block'; }
+      }
+      // Apply course visibility
+      if(d.cursos && d.cursos.length > 0){
+        document.querySelectorAll('.ccard').forEach(card => {
+          const m = (card.getAttribute('onclick')||'').match(/'(\w+)'/);
+          if(!m) return;
+          card.style.display = d.cursos.includes(m[1]) ? '' : 'none';
+        });
+      }
+    }
+
+    // Course info (materia/campo per course)
+    const courseSnap = await getDoc(doc(db, 'config', 'courseInfo'));
+    if(courseSnap.exists()){
+      const ci = courseSnap.data();
+      Object.keys(ci).forEach(code => {
+        if(window.COURSE_INFO[code]) Object.assign(window.COURSE_INFO[code], ci[code]);
+      });
+      // Update card labels
+      Object.keys(ci).forEach(code => {
+        const matEl   = document.getElementById('mat-'+code);
+        const campoEl = document.getElementById('campo-'+code);
+        if(matEl)   matEl.textContent   = ci[code].area  || '';
+        if(campoEl) campoEl.textContent = ci[code].campo ? '🔷 '+ci[code].campo : '';
+      });
+    }
+
+    // Criteria
+    const critSnap = await getDoc(doc(db, 'config', 'criteria'));
+    if(critSnap.exists()){
+      const cr = critSnap.data();
+      Object.keys(cr).forEach(code => {
+        if(window.criteria[code]) Object.assign(window.criteria[code], cr[code]);
+      });
+    }
+
+    // Scores
+    const scoresSnap = await getDoc(doc(db, 'data', 'scores'));
+    if(scoresSnap.exists()){
+      const sc = scoresSnap.data();
+      Object.keys(sc).forEach(code => {
+        if(window.scores[code]){
+          Object.keys(sc[code]).forEach(t => {
+            Object.keys(sc[code][t]).forEach(idx => {
+              if(window.scores[code][t][idx]) Object.assign(window.scores[code][t][idx], sc[code][t][idx]);
+            });
+          });
+        }
+      });
+    }
+
+    // Attendance
+    const attSnap = await getDoc(doc(db, 'data', 'attendance'));
+    if(attSnap.exists()){
+      const att = attSnap.data();
+      Object.keys(att).forEach(code => {
+        if(window.attendance[code]) Object.assign(window.attendance[code], att[code]);
+      });
+    }
+
+    // Filiation extras
+    const filSnap = await getDoc(doc(db, 'data', 'filExtra'));
+    if(filSnap.exists()){
+      const fil = filSnap.data();
+      Object.keys(fil).forEach(code => {
+        if(window.filExtra[code]) Object.assign(window.filExtra[code], fil[code]);
+      });
+    }
+
+    console.log('✅ Datos cargados desde Firebase');
+    toast('✅ Datos sincronizados con la nube');
+
+  } catch(e){
+    console.warn('Firebase load error:', e);
+  }
+}
+
+// ── Auto-guardar cuando cambian los datos ──
+// Exponer funciones al scope global para que el código existente las use
+window.fbSaveScores = () => fbSave('data', 'scores', JSON.parse(JSON.stringify(window.scores)));
+window.fbSaveAttendance = () => fbSave('data', 'attendance', JSON.parse(JSON.stringify(window.attendance)));
+window.fbSaveCriteria = () => fbSave('config', 'criteria', JSON.parse(JSON.stringify(window.criteria)));
+window.fbSaveFilExtra = () => fbSave('data', 'filExtra', JSON.parse(JSON.stringify(window.filExtra)));
+window.fbSaveDocente = () => fbSave('config', 'docente', JSON.parse(JSON.stringify(window.DOCENTE)));
+window.fbSaveCourseInfo = () => fbSave('config', 'courseInfo', JSON.parse(JSON.stringify(window.COURSE_INFO)));
+
+// Load on start
+window.addEventListener('load', () => {
+  setTimeout(fbLoad, 800); // wait for app to initialize
+});
+
+</script>
+</body>
+</html>
